@@ -4,9 +4,9 @@ using Ninject.Mvc3;
 using Web.Infrastructure.Session;
 using Web.Infrastructure.Authentication;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(MVC3Boilerplate.AppStart_NinjectMVC3), "Start")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(Web.AppStart_NinjectMVC3), "Start")]
 
-namespace MVC3Boilerplate {
+namespace Web {
     public static class AppStart_NinjectMVC3 {
         public static void RegisterServices(IKernel kernel) {
             //kernel.Bind<IThingRepository>().To<SqlThingRepository>();

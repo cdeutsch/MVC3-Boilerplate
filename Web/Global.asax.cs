@@ -7,7 +7,7 @@ using System.Web.Routing;
 using System.Data.Entity.Database;
 using Web.Models;
 
-namespace MVC3Boilerplate
+namespace Web
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801

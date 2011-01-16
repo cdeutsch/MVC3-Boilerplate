@@ -10,3 +10,4 @@ _ReSharper.*/
 AssemblyInfo.cs
 *.user
 Web/App_Data
+/MVC3Boilerplate/App_Data/SiteDB.sdf

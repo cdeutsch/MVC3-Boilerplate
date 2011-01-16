@@ -27,7 +27,15 @@ namespace Web.Controllers
             return View(model);
         }
 
-        
+        public ActionResult About()
+        {
+            return View();
+        }
+
+        public ActionResult Privacy()
+        {
+            return View();
+        }
     }
 
 }

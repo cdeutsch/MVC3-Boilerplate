@@ -18,10 +18,15 @@ namespace Web.Models {
 
         [Key] 
         public long UserId { get; set; }
+
+        [Required(ErrorMessage="Email is required")]
         [StringLength(320)] 
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Username is required")]
         [StringLength(50)] 
         public string Username { get; set; }
+
         [StringLength(100)] 
         public string PasswordHash { get; set; }
         [StringLength(25)] 

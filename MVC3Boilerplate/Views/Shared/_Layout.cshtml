@@ -19,7 +19,7 @@
     @MvcHtmlString.Create(SquishIt.Framework.Bundle.Css()
         .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
         .Add(HtmlHelpers.VirtualCSSPath("site.css"))
-        .ForceRelease()
+        //.ForceRelease()
         .Render(HtmlHelpers.VirtualCSSPath("combined_#.css"))
     )
 
@@ -28,15 +28,27 @@
 </head>
 
 <body>
+    <div id="flash" style="display:none"></div>
     <div id="container">
         <header>
-
+            <h1><a href="/">MySiteName</a></h1>
+            <div id="loginMenu">
+            @if (HttpContext.Current.User.Identity.IsAuthenticated) { 
+            <text>Hi @Html.Friendly() | </text>
+            <form id="LogOutForm" name="LogOutForm" action="@Url.Action("delete","session")" method="post">
+                @Html.AntiForgeryToken()
+                <a href="" onclick="LogOutForm.submit();return false;" >Logout</a>
+            </form>
+            } else {
+                @Html.ActionLink("Login","create","session")
+            } 
+            </div>
         </header>
         <div id="main">
             @RenderBody()
         </div>
         <footer>
-
+            Copyright &copy;@DateTime.Now.Year
         </footer>
     </div>
     
@@ -46,16 +58,18 @@
     <script>        !window.jQuery && document.write(unescape('%3Cscript src="@Html.ScriptPath("jquery-1.4.2.js")"%3E%3C/script%3E'))</script>
     @*use SquishIt to combine and compress all Javascripts for better performance*@
     @MvcHtmlString.Create(SquishIt.Framework.Bundle.JavaScript()
-        .Add(HtmlHelpers.VirtualScriptPath("MicrosoftAjax.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("MicrosoftMvcValidation.js"))
         .Add(HtmlHelpers.VirtualScriptPath("jquery-1.4.4.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery.unobtrusive-ajax.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.unobtrusive.min.js"))
         .Add(HtmlHelpers.VirtualScriptPath("jquery-ui.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery.ajaxui.js"))
         .Add(HtmlHelpers.VirtualScriptPath("json2.min.js"))
         .Add(HtmlHelpers.VirtualScriptPath("site.js"))
-        .ForceRelease()
+        //.ForceRelease()
         .Render(HtmlHelpers.VirtualScriptPath("combined_#.js"))
     )
-
+    
     <!--[if lt IE 7 ]>
     @Html.Script("dd_belatedpng.js")
     <script src="js/libs/dd_belatedpng.js"></script>

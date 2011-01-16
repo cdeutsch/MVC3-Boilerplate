@@ -1,0 +1,55 @@
+﻿@inherits System.Web.Mvc.WebViewPage<Web.Controllers.CreateForm>
+@{
+    ViewBag.Title = "MySiteName - Login or Sign Up";
+    Html.EnableClientValidation();
+}
+
+<div id="login">
+    <h2>Login</h2>
+
+    @using (Html.BeginForm()) { 
+        @Html.AntiForgeryToken()
+        <div>
+            <label>Login</label><br />
+            @Html.TextBoxFor(oo => oo.UserLogin.LoginName)
+            @Html.ValidationMessageFor(oo => oo.UserLogin.LoginName, "*")
+        </div>
+        <div>
+            <label>Password</label><br />
+            @Html.PasswordFor(oo => oo.UserLogin.Password) 
+        </div>
+        <div>
+            <input type="submit" value="Login" />
+        </div>
+    }
+</div>
+<div id="signup">
+    <h2>No account?</h2>
+
+    @using (Html.BeginForm("register","session")) { 
+        @Html.AntiForgeryToken()
+        <div>
+            <label>User Name</label><br />
+            @Html.TextBoxFor(oo => oo.UserNew.Username)
+            @Html.ValidationMessageFor(oo => oo.UserNew.Username, "*") 
+
+        </div>
+        <div>
+            <label>Email</label><br />
+            @Html.TextBoxFor(oo => oo.UserNew.Email)
+            @Html.ValidationMessageFor(oo => oo.UserNew.Email, "*")
+        </div>
+        <div>
+            <label>Password</label><br />
+            @Html.Password("Password")
+        </div>
+        <div>
+            <label>Confirm</label><br />
+            @Html.Password("Confirm")
+        </div>
+        <div>
+            <input type="submit" value="Sign Up" />
+        </div>
+    }
+</div>
+

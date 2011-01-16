@@ -19,7 +19,7 @@
     @MvcHtmlString.Create(SquishIt.Framework.Bundle.Css()
         .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
         .Add(HtmlHelpers.VirtualCSSPath("site.css"))
-        //.ForceRelease()
+        //.ForceRelease() //comment in to enable compression.
         .Render(HtmlHelpers.VirtualCSSPath("combined_#.css"))
     )
 
@@ -66,7 +66,7 @@
         .Add(HtmlHelpers.VirtualScriptPath("jquery.ajaxui.js"))
         .Add(HtmlHelpers.VirtualScriptPath("json2.min.js"))
         .Add(HtmlHelpers.VirtualScriptPath("site.js"))
-        //.ForceRelease()
+        //.ForceRelease() //comment in to enable compression.
         .Render(HtmlHelpers.VirtualScriptPath("combined_#.js"))
     )
     

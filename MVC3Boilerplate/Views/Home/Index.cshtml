@@ -1,0 +1,20 @@
+﻿@inherits System.Web.Mvc.WebViewPage<int>
+
+@{
+    ViewBag.Title = "MySiteName";
+}
+
+<div class="container"> 
+        
+    @if (HttpContext.Current.User.Identity.IsAuthenticated) { 
+        
+        <h2>Welcome!</h2>
+        
+    } else {
+
+        <h2>Signup</h2>
+
+        <h4 class="signUp">@Html.ActionLink("Login or Signup to get started.","create","session")</h4>
+
+    }
+</div>

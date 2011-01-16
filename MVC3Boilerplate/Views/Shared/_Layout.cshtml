@@ -1,0 +1,80 @@
+﻿<!doctype html>
+@* paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ *@
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    @*  Mobile viewport optimized: j.mp/bplateviewport *@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    @*use SquishIt to combine and compress all CSS and Javascripts for better performance*@
+    @MvcHtmlString.Create(SquishIt.Framework.Bundle.Css()
+        .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
+        .Add(HtmlHelpers.VirtualCSSPath("site.css"))
+        .ForceRelease()
+        .Render(HtmlHelpers.VirtualCSSPath("combined_#.css"))
+    )
+
+    @* All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects *@
+    @Html.Script("modernizr-1.6.min.js")
+</head>
+
+<body>
+    <div id="container">
+        <header>
+
+        </header>
+        <div id="main">
+            @RenderBody()
+        </div>
+        <footer>
+
+        </footer>
+    </div>
+    
+    @*Javascript at the bottom for fast page loading -->
+      Grab Google CDN's jQuery. fall back to local if necessary*@
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+    <script>        !window.jQuery && document.write(unescape('%3Cscript src="@Html.ScriptPath("jquery-1.4.2.js")"%3E%3C/script%3E'))</script>
+    @*use SquishIt to combine and compress all Javascripts for better performance*@
+    @MvcHtmlString.Create(SquishIt.Framework.Bundle.JavaScript()
+        .Add(HtmlHelpers.VirtualScriptPath("MicrosoftAjax.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("MicrosoftMvcValidation.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery-1.4.4.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery-ui.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("json2.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("site.js"))
+        .ForceRelease()
+        .Render(HtmlHelpers.VirtualScriptPath("combined_#.js"))
+    )
+
+    <!--[if lt IE 7 ]>
+    @Html.Script("dd_belatedpng.js")
+    <script src="js/libs/dd_belatedpng.js"></script>
+    <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+    <![endif]-->
+
+    @*asynchronous google analytics: mathiasbynens.be/notes/async-analytics-snippet change the UA-XXXXX-X to be your site's ID *@
+    <script>
+        /*
+        var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+        (function (d, t) {
+            var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+            g.async = true;
+            g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g, s);
+        })(document, 'script');
+        */
+  </script>
+    
+</body>
+</html>

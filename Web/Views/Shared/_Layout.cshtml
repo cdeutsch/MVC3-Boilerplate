@@ -20,6 +20,7 @@
         .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
         .Add(HtmlHelpers.VirtualCSSPath("site.css"))
         //.ForceRelease() //comment in to enable compression.
+        .WithCompressor(SquishIt.Framework.Css.Compressors.CssCompressors.YuiCompressor)
         .Render(HtmlHelpers.VirtualCSSPath("combined_#.css"))
     )
 

@@ -68,9 +68,34 @@ namespace Web.Models
             return user;
         }
 
+        public static User GetUser(SiteDB db, string Username)
+        {
+            return GetUser(db, Username, false);
+        }
+        public static User GetUser(SiteDB db, string Username, bool IncludeDisabled)
+        {
+            return db.Users.SingleOrDefault(oo => (oo.Username.ToLower() == Username.ToLower() || oo.Email.ToLower() == Username.ToLower()) && (IncludeDisabled || oo.Enabled == true));
+        }
         public static User GetUser(SiteDB db, string Username, string Password)
         {
             User user = GetUser(db, Username);
+            return ReturnUserIfPasswordIsValid(user, Password);
+        }
+        public static User GetUser(SiteDB db, long UserId)
+        {
+            return GetUser(db, UserId, false);
+        }
+        public static User GetUser(SiteDB db, long UserId, bool IncludeDisabled)
+        {
+            return db.Users.SingleOrDefault(oo => (oo.UserId == UserId) && (IncludeDisabled || oo.Enabled == true));
+        }
+        public static User GetUser(SiteDB db, long UserId, string Password)
+        {
+            User user = GetUser(db, UserId);
+            return ReturnUserIfPasswordIsValid(user, Password);
+        }
+        private static User ReturnUserIfPasswordIsValid(User user, string Password)
+        {
             if (user != null)
             {
                 ////clear user if password doesn't validate.
@@ -83,15 +108,6 @@ namespace Web.Models
             return user;
         }
 
-        public static User GetUser(SiteDB db, string Username)
-        {
-            return GetUser(db, Username, false);
-        }
-
-        public static User GetUser(SiteDB db, string Username, bool IncludeDisabled)
-        {
-            return db.Users.SingleOrDefault(oo => (oo.Username.ToLower() == Username.ToLower() || oo.Email.ToLower() == Username.ToLower()) && (IncludeDisabled || oo.Enabled == true));
-        }
 
         /// <summary>
         /// Change the user's password.
@@ -101,14 +117,14 @@ namespace Web.Models
         /// <param name="OldPassword"></param>
         /// <param name="NewPassword"></param>
         /// <returns></returns>
-        public static bool ChangePassword(SiteDB db, string Username, string OldPassword, string NewPassword)
+        public static bool ChangePassword(SiteDB db, long UserId, string OldPassword, string NewPassword)
         {
             bool success = false;
 
             //check password requirements.
             if (!string.IsNullOrEmpty(NewPassword) && NewPassword.Length >= MIN_PASSWORD_LENGTH)
             {
-                User user = GetUser(db, Username, OldPassword);
+                User user = GetUser(db, UserId, OldPassword);
                 if (user != null)
                 {
                     //change the password.

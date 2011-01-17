@@ -41,7 +41,7 @@ namespace Web.Models
     public class LogOnModel
     {
         [Required]
-        [Display(Name = "Login name")]
+        [Display(Name = "Login")]
         public string LoginName { get; set; }
 
         [Required]
@@ -90,7 +90,7 @@ namespace Web.Models
 
         bool ValidateUser(string userName, string password);
         MembershipCreateStatus CreateUser(string userName, string password, string email);
-        bool ChangePassword(string userName, string oldPassword, string newPassword);
+        bool ChangePassword(string userKey, string oldPassword, string newPassword);
     }
 
     public class AccountMembershipService : IMembershipService
@@ -135,17 +135,19 @@ namespace Web.Models
             return status;
         }
 
-        public bool ChangePassword(string userName, string oldPassword, string newPassword)
+        public bool ChangePassword(string userKey, string oldPassword, string newPassword)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (String.IsNullOrEmpty(userKey)) throw new ArgumentException("Value cannot be null or empty.", "userKey");
             if (String.IsNullOrEmpty(oldPassword)) throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
             if (String.IsNullOrEmpty(newPassword)) throw new ArgumentException("Value cannot be null or empty.", "newPassword");
+            long iUserKey;
+            if (!long.TryParse(userKey, out iUserKey)) throw new ArgumentException("Value must be numeric.", "userKey");
 
             // The underlying ChangePassword() will throw an exception rather
             // than return false in certain failure scenarios.
             try
             {
-                return UserRepository.ChangePassword(_db, userName, oldPassword, newPassword);
+                return UserRepository.ChangePassword(_db, iUserKey, oldPassword, newPassword);
             }
             catch (ArgumentException)
             {

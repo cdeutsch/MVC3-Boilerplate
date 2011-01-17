@@ -1,4 +1,4 @@
-﻿@inherits System.Web.Mvc.WebViewPage<Web.Models.ComboSignupLoginModel>
+﻿@model Web.Models.ComboSignupLoginModel
 @{
     ViewBag.Title = "MySiteName - Login or Sign Up";
     Html.EnableClientValidation();
@@ -11,17 +11,24 @@
 
     @using (Html.BeginForm("login","session")) { 
         @Html.AntiForgeryToken()
-        <div>
-            @Html.LabelFor(mm => mm.UserLogin.LoginName, "Login")<br />
+        @Html.Hidden("ReturnUrl", Request.QueryString["ReturnUrl"])
+        <div class="editor-label">
+            @Html.LabelFor(mm => mm.UserLogin.LoginName, "Login")
+        </div>
+        <div class="editor-field">
             @Html.TextBoxFor(mm => mm.UserLogin.LoginName)
-            @Html.ValidationMessageFor(mm => mm.UserLogin.LoginName, "*")
+            @Html.ValidationMessageFor(mm => mm.UserLogin.LoginName)
         </div>
-        <div>
-            @Html.LabelFor(mm => mm.UserLogin.Password)<br />
+        
+        <div class="editor-label">
+            @Html.LabelFor(mm => mm.UserLogin.Password)
+        </div>
+        <div class="editor-field">
             @Html.PasswordFor(mm => mm.UserLogin.Password) 
-            @Html.ValidationMessageFor(mm => mm.UserLogin.Password, "*")
+            @Html.ValidationMessageFor(mm => mm.UserLogin.Password)
         </div>
-        <div>
+        
+        <div class="editor-buttons">
             <input type="submit" value="Login" />
         </div>
     }
@@ -29,30 +36,42 @@
 <div id="signup">
     <h2>No account?</h2>
 
-    @using (Html.BeginForm("signup","session")) { 
+    @using (Html.BeginForm("signup", "session"))
+    { 
         @Html.AntiForgeryToken()
-        <div>
-            @Html.LabelFor(mm => mm.UserNew.UserName, "User Name")<br />
+        <div class="editor-label">
+            @Html.LabelFor(mm => mm.UserNew.UserName, "User Name")
+        </div>
+        <div class="editor-field">
             @Html.TextBoxFor(mm => mm.UserNew.UserName)
-            @Html.ValidationMessageFor(mm => mm.UserNew.UserName, "*") 
-
+            @Html.ValidationMessageFor(mm => mm.UserNew.UserName) 
         </div>
-        <div>
-            @Html.LabelFor(mm => mm.UserNew.Email)<br />
+        
+        <div class="editor-label">
+            @Html.LabelFor(mm => mm.UserNew.Email)
+        </div>
+        <div class="editor-field">
             @Html.TextBoxFor(mm => mm.UserNew.Email)
-            @Html.ValidationMessageFor(mm => mm.UserNew.Email, "*")
+            @Html.ValidationMessageFor(mm => mm.UserNew.Email)
         </div>
-        <div>
-            @Html.LabelFor(mm => mm.UserNew.Password)<br />
+        
+        <div class="editor-label">
+            @Html.LabelFor(mm => mm.UserNew.Password)
+        </div>
+        <div class="editor-field">
             @Html.PasswordFor(mm => mm.UserNew.Password)
-            @Html.ValidationMessageFor(mm => mm.UserNew.Password, "*")
+            @Html.ValidationMessageFor(mm => mm.UserNew.Password)
         </div>
-        <div>
-            @Html.LabelFor(mm => mm.UserNew.ConfirmPassword, "Confirm")<br />
+        
+        <div class="editor-label">
+            @Html.LabelFor(mm => mm.UserNew.ConfirmPassword, "Confirm")
+        </div>
+        <div class="editor-field">
             @Html.PasswordFor(mm => mm.UserNew.ConfirmPassword)
-            @Html.ValidationMessageFor(mm => mm.UserNew.ConfirmPassword, "*")
+            @Html.ValidationMessageFor(mm => mm.UserNew.ConfirmPassword)
         </div>
-        <div>
+        
+        <div class="editor-buttons">
             <input type="submit" value="Sign Up" />
         </div>
     }

@@ -142,7 +142,7 @@ textarea
     min-height: 75px;
 }
 
-.editor-label 
+.editor-label, .editor-buttons 
 {
     margin: 1em 0 0 0;
 }

@@ -21,6 +21,5 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 ## Road Map ##
 
 * If SquishIt becomes available as a NuGet package update reference.
-* Add password as a required field on sign up form.
 * Add Telerik MVC Controls - http://www.telerik.com/products/aspnet-mvc.aspx
 * Add examples of using JSON Parser

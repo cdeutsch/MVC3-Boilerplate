@@ -28,11 +28,13 @@
         $.flashBase('error', message);
     };
     $.flashBase = function (cssClass, message) {
-        var jFlash = $('#flash');
-        jFlash.html(message);
-        jFlash.attr('class', '');
-        jFlash.addClass(cssClass);
-        jFlash.slideDown('slow');
+        if (message) {
+            var jFlash = $('#flash');
+            jFlash.html(message);
+            jFlash.attr('class', '');
+            jFlash.addClass(cssClass);
+            jFlash.slideDown('slow');
+        }
     };
 
     $.hideBusy = function () {

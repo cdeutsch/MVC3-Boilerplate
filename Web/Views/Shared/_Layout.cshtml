@@ -36,12 +36,12 @@
             <div id="loginMenu">
             @if (HttpContext.Current.User.Identity.IsAuthenticated) { 
             <text>Hi @Html.Friendly() | </text>
-            <form id="LogOutForm" name="LogOutForm" action="@Url.Action("delete","session")" method="post">
+            <form id="LogOutForm" name="LogOutForm" action="@Url.Action("logout","session")" method="post">
                 @Html.AntiForgeryToken()
                 <a href="" onclick="LogOutForm.submit();return false;" >Logout</a>
             </form>
             } else {
-                @Html.ActionLink("Login","create","session")
+                @Html.ActionLink("Login","login","session")
             } 
             </div>
         </header>
@@ -76,6 +76,9 @@
     <script src="js/libs/dd_belatedpng.js"></script>
     <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
     <![endif]-->
+
+    @*display jquery flash messages*@
+    @Html.Flash()
 
     @*asynchronous google analytics: mathiasbynens.be/notes/async-analytics-snippet change the UA-XXXXX-X to be your site's ID *@
     <script>

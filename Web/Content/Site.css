@@ -45,6 +45,82 @@ footer
     clear: both;
 }
 
+
+/* Styles for flash messages
+-----------------------------------------------------------*/
+/* hide validation summaries if the user has javascript in which case we'll "flash" the messages */
+.flash 
+{
+    display: none;
+}
+.no-js .flash 
+{
+    display: block;
+}
+
+#flash li
+{
+    list-style: none;
+}
+
+#busy 
+{
+    background-image: url('images/busy.gif');
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    position: fixed;
+    top: 10px;
+    right: 50%;
+    z-index: 100;
+}
+.info
+{
+    background-color: #CCFFCC;
+    border-top: 1px solid #FFCC66;
+    border-bottom: 4px solid #FFCC66;
+    padding: 6px;
+    font-family: helvetica;
+    font-size: 1.1em;
+    text-align: center;
+    border-top-color: #006600;
+    border-bottom-color: #006600;
+    font-weight: bold;
+    color: #339933;
+    cursor:pointer;
+}
+.warning
+{
+    background-color: #FFFF99;
+    border-top: 1px solid #FFCC66;
+    border-bottom: 4px solid #FFCC66;
+    padding: 6px;
+    font-family: helvetica;
+    font-size: 0.9em;
+    text-align: center;
+    border-top-color: #CC9900;
+    border-bottom-color: #CC9900;
+    font-weight: bold;
+    color: #663300;
+    cursor:pointer;
+}
+.error
+{
+    background-color: #FFCC99;
+    border-top: 1px solid #FFCC66;
+    border-bottom: 4px solid #FFCC66;
+    padding: 4px;
+    font-family: helvetica;
+    font-size: 1.1em;
+    text-align: center;
+    border-top-color: #800000;
+    border-bottom-color: #800000;
+    font-weight: bold;
+    color: #990000;
+    cursor:pointer;
+}
+
+
 /* Styles for basic forms
 -----------------------------------------------------------*/
 

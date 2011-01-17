@@ -12,29 +12,26 @@ namespace Web.Models
         public const string EMAIL_REGEX = @"^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$";
         public const int MIN_PASSWORD_LENGTH = 8;
 
-        public static User RegisterUser(SiteDB db, string Username, string Password, string ConfirmPassword, string Email)
+        public static User RegisterUser(SiteDB db, string Username, string Password, string Email, out MembershipCreateStatus Status)
         {
+            Status = MembershipCreateStatus.ProviderError;
             User user = null;
             //validate email address.
             if (!System.Text.RegularExpressions.Regex.IsMatch(Email, EMAIL_REGEX))
             {
-                throw new InvalidOperationException("Invalid email address");
+                Status = MembershipCreateStatus.InvalidEmail;
             }
             else if (string.IsNullOrEmpty(Password) || Password.Length < MIN_PASSWORD_LENGTH)
             {
-                throw new InvalidOperationException(string.Format("Password must be at least {0} characters long.", MIN_PASSWORD_LENGTH));
-            }
-            else if (Password != ConfirmPassword)
-            {
-                throw new InvalidOperationException("Passwords do not match.");
+                Status = MembershipCreateStatus.InvalidPassword;
             }
             else if (db.Users.SingleOrDefault(oo => oo.Email == Email) != null)
             {
-                throw new InvalidOperationException("This email address is already in use.");
+                Status = MembershipCreateStatus.DuplicateEmail;
             }
             else if (db.Users.SingleOrDefault(oo => oo.Username == Username) != null)
             {
-                throw new InvalidOperationException("This username is already in use.");
+                Status = MembershipCreateStatus.DuplicateUserName;
             }
             else
             {
@@ -54,21 +51,18 @@ namespace Web.Models
                     db.Users.Add(user);
                     db.SaveChanges();
 
+                    Status = MembershipCreateStatus.Success;
                 }
                 catch (System.Data.SqlClient.SqlException sqlExp)
                 {
                     if (IsDuplicateUserError((Exception)sqlExp))
                     {
-                        throw new InvalidOperationException("This email is already in our system");
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("There's a problem saving your information");
+                        Status = MembershipCreateStatus.DuplicateEmail;
                     }
                 }
                 catch (Exception exp)
                 {
-                    throw new InvalidOperationException("There's a problem saving your information");
+                    Status = MembershipCreateStatus.ProviderError;
                 }
             }
             return user;
@@ -99,6 +93,38 @@ namespace Web.Models
             return db.Users.SingleOrDefault(oo => (oo.Username.ToLower() == Username.ToLower() || oo.Email.ToLower() == Username.ToLower()) && (IncludeDisabled || oo.Enabled == true));
         }
 
+        /// <summary>
+        /// Change the user's password.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="Username"></param>
+        /// <param name="OldPassword"></param>
+        /// <param name="NewPassword"></param>
+        /// <returns></returns>
+        public static bool ChangePassword(SiteDB db, string Username, string OldPassword, string NewPassword)
+        {
+            bool success = false;
+
+            //check password requirements.
+            if (!string.IsNullOrEmpty(NewPassword) && NewPassword.Length >= MIN_PASSWORD_LENGTH)
+            {
+                User user = GetUser(db, Username, OldPassword);
+                if (user != null)
+                {
+                    //change the password.
+                    user.PasswordSalt = CreateSalt();
+                    user.PasswordHash = CreatePasswordHash(NewPassword, user.PasswordSalt);
+                    user.Updated = user.Created;
+
+                    db.SaveChanges();
+
+                    success = true;
+                }
+            }
+
+            return success;
+        }
+        
         /// <summary>
         /// Creates Salt with default size of 16.
         /// </summary>

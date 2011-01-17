@@ -26,18 +26,18 @@ namespace Web
             routes.MapRoute(
                 "Login", // Route name
                 "login", // URL with parameters
-                new { controller = "Session", action = "Create" } // Parameter defaults
+                new { controller = "Session", action = "login" } // Parameter defaults
             );
             routes.MapRoute(
                 "Logout", // Route name
                 "logout", // URL with parameters
-                new { controller = "Session", action = "Delete" } // Parameter defaults
+                new { controller = "Session", action = "logout" } // Parameter defaults
             );
 
             routes.MapRoute(
                 "Session", // Route name
                 "session/{action}/{id}", // URL with parameters
-                new { controller = "Session", action = "Create", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Session", action = "login", id = UrlParameter.Optional } // Parameter defaults
             );
 
             routes.MapRoute(

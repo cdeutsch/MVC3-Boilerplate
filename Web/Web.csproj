@@ -94,10 +94,9 @@
     <Compile Include="Helpers\FlashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\XSSHelper.cs" />
-    <Compile Include="Infrastructure\Authentication\IAuthenticationService.cs" />
-    <Compile Include="Infrastructure\Authentication\UserAuthenticationService.cs" />
     <Compile Include="Infrastructure\Session\IUserSession.cs" />
     <Compile Include="Infrastructure\Session\WebUserSession.cs" />
+    <Compile Include="Models\SessionModels.cs" />
     <Compile Include="Models\IAuditable.cs" />
     <Compile Include="Models\SiteDB.cs" />
     <Compile Include="Models\User.cs" />
@@ -107,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\boilerplate.css" />
+    <Content Include="Content\Images\busy.gif" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\jquery-ui.css" />
@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\elmah\" />
-    <Folder Include="Content\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -173,7 +172,7 @@
     <Content Include="Views\Home\Privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Session\Create.cshtml" />
+    <Content Include="Views\Session\Login.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -192,7 +191,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>9556</DevelopmentServerPort>
+          <DevelopmentServerPort>5334</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

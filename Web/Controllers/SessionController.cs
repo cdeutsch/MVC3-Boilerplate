@@ -7,6 +7,7 @@ using System.Web.Security;
 using Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Routing;
+using Web.Infrastructure.Session;
 
 namespace Web.Controllers
 {
@@ -15,20 +16,30 @@ namespace Web.Controllers
 
         public IFormsAuthenticationService FormsService { get; set; }
         public IMembershipService MembershipService { get; set; }
+        public IUserSession UserSession { get; set; }
 
         SiteDB _db;
         UserActivity _log;
 
-        protected override void Initialize(RequestContext requestContext)
+        public SessionController(IFormsAuthenticationService FormsService, IMembershipService MembershipService, IUserSession UserSession)
         {
             _db = new SiteDB();
             _log = new UserActivity(_db);
 
-            if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-            if (MembershipService == null) { MembershipService = new AccountMembershipService(_db); }
-
-            base.Initialize(requestContext);
+            this.FormsService = FormsService;
+            this.MembershipService = MembershipService;
+            this.UserSession = UserSession;
         }
+        //protected override void Initialize(RequestContext requestContext)
+        //{
+        //    _db = new SiteDB();
+        //    _log = new UserActivity(_db);
+
+        //    if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
+        //    if (MembershipService == null) { MembershipService = new AccountMembershipService(_db); }
+
+        //    base.Initialize(requestContext);
+        //}
 
         public ActionResult Login()
         {
@@ -122,7 +133,7 @@ namespace Web.Controllers
         public ActionResult Logout()
         {
             Response.Cookies["friendly"].Value = null;
-            _log.LogIt(Convert.ToInt64(User.Identity.Name), "Logged out");
+            _log.LogIt(UserSession.GetCurrentUserId(), "Logged out");
             FormsService.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -140,7 +151,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (MembershipService.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
+                if (MembershipService.ChangePassword(UserSession.GetCurrentUserName(), model.OldPassword, model.NewPassword))
                 {
                     return RedirectToAction("ChangePasswordSuccess");
                 }

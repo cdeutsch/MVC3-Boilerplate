@@ -96,6 +96,7 @@
     <Compile Include="Helpers\XSSHelper.cs" />
     <Compile Include="Infrastructure\Session\IUserSession.cs" />
     <Compile Include="Infrastructure\Session\WebUserSession.cs" />
+    <Compile Include="Models\AuditableRepository.cs" />
     <Compile Include="Models\SessionModels.cs" />
     <Compile Include="Models\IAuditable.cs" />
     <Compile Include="Models\SiteDB.cs" />

@@ -40,7 +40,7 @@
     { 
         @Html.AntiForgeryToken()
         <div class="editor-label">
-            @Html.LabelFor(mm => mm.UserNew.UserName, "User Name")
+            @Html.LabelFor(mm => mm.UserNew.UserName)
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(mm => mm.UserNew.UserName)

@@ -45,8 +45,7 @@ namespace Web.Models
                     //create salt for password hash.
                     user.PasswordSalt = CreateSalt();
                     user.PasswordHash = CreatePasswordHash(Password, user.PasswordSalt);
-                    user.Created = DateTime.Now;
-                    user.Updated = user.Created;
+                    AuditableRepository.DefaultAuditableToNow(user);
 
                     db.Users.Add(user);
                     db.SaveChanges();

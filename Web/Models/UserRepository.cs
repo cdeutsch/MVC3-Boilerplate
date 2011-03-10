@@ -9,76 +9,90 @@ namespace Web.Models
 {
     public class UserRepository
     {
-        public const string EMAIL_REGEX = @"^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$";
-        public const int MIN_PASSWORD_LENGTH = 8;
-
-        public static User RegisterUser(SiteDB db, string Username, string Password, string Email, out MembershipCreateStatus Status)
+        public static User CreateUser(SiteDB db, string Username, string Password, string Email)
         {
-            Status = MembershipCreateStatus.ProviderError;
-            User user = null;
-            //validate email address.
-            if (!System.Text.RegularExpressions.Regex.IsMatch(Email, EMAIL_REGEX))
-            {
-                Status = MembershipCreateStatus.InvalidEmail;
-            }
-            else if (string.IsNullOrEmpty(Password) || Password.Length < MIN_PASSWORD_LENGTH)
-            {
-                Status = MembershipCreateStatus.InvalidPassword;
-            }
-            else if (db.Users.SingleOrDefault(oo => oo.Email == Email) != null)
-            {
-                Status = MembershipCreateStatus.DuplicateEmail;
-            }
-            else if (db.Users.SingleOrDefault(oo => oo.Username == Username) != null)
-            {
-                Status = MembershipCreateStatus.DuplicateUserName;
-            }
-            else
-            {
-                try
-                {
-                    //create a new user.
-                    user = new User();
-                    user.Username = Username;
-                    user.Email = Email;
-                    user.Enabled = true;
-                    //create salt for password hash.
-                    user.PasswordSalt = CreateSalt();
-                    user.PasswordHash = CreatePasswordHash(Password, user.PasswordSalt);
-                    AuditableRepository.DefaultAuditableToNow(user);
+            //create a new user.
+            User user = new User();
+            user.Username = Username;
+            user.Email = Email;
+            user.Enabled = true;
+            //create salt for password hash.
+            user.PasswordSalt = CreateSalt();
+            user.PasswordHash = CreatePasswordHash(Password, user.PasswordSalt);
+            user.Created = DateTime.Now;
+            user.Updated = user.Created;
 
-                    db.Users.Add(user);
-                    db.SaveChanges();
+            db.Users.Add(user);
+            db.SaveChanges();
 
-                    Status = MembershipCreateStatus.Success;
-                }
-                catch (System.Data.SqlClient.SqlException sqlExp)
-                {
-                    if (IsDuplicateUserError((Exception)sqlExp))
-                    {
-                        Status = MembershipCreateStatus.DuplicateEmail;
-                    }
-                }
-                catch (Exception exp)
-                {
-                    Status = MembershipCreateStatus.ProviderError;
-                }
-            }
             return user;
         }
 
+        public static User CompleteRegistration(SiteDB db, string Username, string FirstName, string LastName)
+        {
+            
+            if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
+            {
+                throw new ApplicationException("First name or last name is required.");
+            }
+            
+            //get the user that should have been created by the membership provider.
+            User user = GetUser(db, Username);
+            if (user == null) 
+            {
+                throw new ApplicationException("The newly created User could not be found.");
+            }
+
+            //update values membership provider did not set.
+            user.FirstName = FirstName;
+            user.LastName = LastName;
+                    
+            db.SaveChanges();
+
+            return user;
+            
+        }
+
+        public static User DeleteUser(SiteDB db, string Username, bool DeleteData)
+        {
+            User user = GetUser(db, Username);
+            if (user == null)
+            {
+                throw new ApplicationException("User not found.");
+            }
+            if (DeleteData)
+            {
+                db.Users.Remove(user);
+            }
+            else
+            {
+                user.Enabled = false;
+            }
+            db.SaveChanges();
+
+            return user;
+        }
+
+        /// <summary>
+        /// Will return a User if the specified Username matches with the Email or Username fields.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="Username"></param>
+        /// <returns></returns>
         public static User GetUser(SiteDB db, string Username)
         {
             return GetUser(db, Username, false);
         }
+        /// <summary>
+        /// Will return a User if the specified Username matches with the Email or Username fields.
+        /// </summary>
+        /// <param name="db"></param>
+        /// <param name="Username"></param>
+        /// <param name="IncludeDisabled"></param>
+        /// <returns></returns>
         public static User GetUser(SiteDB db, string Username, bool IncludeDisabled)
         {
             return db.Users.SingleOrDefault(oo => (oo.Username.ToLower() == Username.ToLower() || oo.Email.ToLower() == Username.ToLower()) && (IncludeDisabled || oo.Enabled == true));
-        }
-        public static User GetUser(SiteDB db, string Username, string Password)
-        {
-            User user = GetUser(db, Username);
-            return ReturnUserIfPasswordIsValid(user, Password);
         }
         public static User GetUser(SiteDB db, long UserId)
         {
@@ -88,69 +102,88 @@ namespace Web.Models
         {
             return db.Users.SingleOrDefault(oo => (oo.UserId == UserId) && (IncludeDisabled || oo.Enabled == true));
         }
-        public static User GetUser(SiteDB db, long UserId, string Password)
+
+        public static User GetUserByUsername(SiteDB db, string Username)
         {
-            User user = GetUser(db, UserId);
-            return ReturnUserIfPasswordIsValid(user, Password);
+            return (from uu in db.Users
+                    where uu.Enabled == true
+                    && uu.Username.ToLower() == Username.ToLower()
+                    select uu).SingleOrDefault();
         }
-        private static User ReturnUserIfPasswordIsValid(User user, string Password)
+
+        public static User GetUserByEmail(SiteDB db, string Email)
         {
+            return (from uu in db.Users
+                    where uu.Enabled == true
+                    && uu.Email.ToLower() == Email.ToLower()
+                    select uu).SingleOrDefault();
+        }
+
+        public static IQueryable<User> FindUserByUsername(SiteDB db, string UsernameQuery)
+        {
+            return from uu in db.Users
+                        where uu.Enabled == true
+                        && uu.Username.ToLower().Contains(UsernameQuery.ToLower())
+                        orderby uu.Username
+                        select uu;
+        }
+
+        public static IQueryable<User> FindUserByEmail(SiteDB db, string EmailQuery)
+        {
+            return from uu in db.Users
+                   where uu.Enabled == true
+                   && uu.Email.ToLower().Contains(EmailQuery.ToLower())
+                   orderby uu.Email
+                   select uu;
+        }
+
+        public static bool ValidateUser(SiteDB db, string Username, string Password)
+        {
+            bool valid = false;
+            User user = GetUser(db, Username);
             if (user != null)
             {
-                ////clear user if password doesn't validate.
                 //validate password by creating hash using salt.
-                if (CreatePasswordHash(Password, user.PasswordSalt) != user.PasswordHash)
+                if (CreatePasswordHash(Password, user.PasswordSalt) == user.PasswordHash)
                 {
-                    user = null;
+                    valid = true;
+                    user.LastLogin = DateTime.Now;
+                    db.SaveChanges();
                 }
             }
-            return user;
+            return valid;
         }
 
-
-        /// <summary>
-        /// Change the user's password.
-        /// </summary>
-        /// <param name="db"></param>
-        /// <param name="Username"></param>
-        /// <param name="OldPassword"></param>
-        /// <param name="NewPassword"></param>
-        /// <returns></returns>
-        public static bool ChangePassword(SiteDB db, long UserId, string OldPassword, string NewPassword)
+        public static bool ChangePassword(SiteDB db, string Username, string OldPassword, string NewPassword)
         {
-            bool success = false;
-
-            //check password requirements.
-            if (!string.IsNullOrEmpty(NewPassword) && NewPassword.Length >= MIN_PASSWORD_LENGTH)
+            bool bSuccess = false;
+            User user = GetUser(db, Username);
+            if (user != null)
             {
-                User user = GetUser(db, UserId, OldPassword);
-                if (user != null)
+                //validate password by creating hash using salt.
+                if (CreatePasswordHash(OldPassword, user.PasswordSalt) == user.PasswordHash)
                 {
-                    //change the password.
+                    //ok to change password.
                     user.PasswordSalt = CreateSalt();
                     user.PasswordHash = CreatePasswordHash(NewPassword, user.PasswordSalt);
-                    user.Updated = user.Created;
-
                     db.SaveChanges();
-
-                    success = true;
+                    bSuccess = true;
                 }
-            }
-
-            return success;
+            }        
+            return bSuccess;
         }
-        
+
         /// <summary>
         /// Creates Salt with default size of 16.
         /// </summary>
         /// <returns></returns>
-        protected static string CreateSalt()
+        public static string CreateSalt()
         {
             //default size to 16.
             return CreateSalt(16);
         }
 
-        protected static string CreateSalt(int size)
+        public static string CreateSalt(int size)
         {
             //Generate a cryptographic random number.
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
@@ -161,20 +194,12 @@ namespace Web.Models
             return Convert.ToBase64String(buff);
         }
 
-        protected static string CreatePasswordHash(string pwd, string salt)
+        public static string CreatePasswordHash(string pwd, string salt)
         {
             string saltAndPwd = String.Concat(pwd, salt);
             string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(saltAndPwd, "sha1");
 
             return hashedPwd;
         }
-
-        protected static bool IsDuplicateUserError(Exception exp)
-        {
-            //return (exp.Message.StartsWith("Column names in each table must be unique") || exp.Message.StartsWith("Violation of UNIQUE KEY constraint"));
-            return (exp.Message.StartsWith("Cannot insert duplicate key row in object 'dbo.User' with unique index 'IX_Users'"));
-        }
-
-
     }
 }

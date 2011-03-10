@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace Web.Models
 {
-    public class AuditableRepository
+    public static class AuditableRepository
     {
         public static void DefaultAuditableToNow(IAuditable obj)
         {

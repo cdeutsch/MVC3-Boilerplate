@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Data.Entity.Database;
 using Web.Models;
+using System.Data.Entity.Database;
 
 namespace Web
 {
@@ -35,14 +35,8 @@ namespace Web
             );
 
             routes.MapRoute(
-                "Session", // Route name
-                "session/{action}/{id}", // URL with parameters
-                new { controller = "Session", action = "login", id = UrlParameter.Optional } // Parameter defaults
-            );
-
-            routes.MapRoute(
                 "Default", // Route name
-                "{action}/{id}", // URL with parameters
+                "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
@@ -51,7 +45,7 @@ namespace Web
         protected void Application_Start()
         {
             //initialize EF Code First DB.
-            DbDatabase.SetInitializer<SiteDB>(new DropCreateDatabaseIfModelChanges<SiteDB>());
+            DbDatabase.SetInitializer<SiteDB>(new SiteDBInitializer(new AccountMembershipService()));
 
             AreaRegistration.RegisterAllAreas();
 

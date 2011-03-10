@@ -30,16 +30,6 @@ namespace Web.Controllers
             this.MembershipService = MembershipService;
             this.UserSession = UserSession;
         }
-        //protected override void Initialize(RequestContext requestContext)
-        //{
-        //    _db = new SiteDB();
-        //    _log = new UserActivity(_db);
-
-        //    if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-        //    if (MembershipService == null) { MembershipService = new AccountMembershipService(_db); }
-
-        //    base.Initialize(requestContext);
-        //}
 
         public ActionResult Login()
         {
@@ -97,23 +87,25 @@ namespace Web.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    //get userid.
-                    User user = UserRepository.GetUser(_db, model.UserNew.UserName);
-                    if (user != null)
+                    try
                     {
+                        //finish the registration that the MembershipProvider did not handle.
+                        User user = UserRepository.CompleteRegistration(_db, model.UserNew.UserName, model.UserNew.FirstName, model.UserNew.LastName);
+                        
                         //log that user registered.
                         _log.LogIt(user.UserId, "User registered");
 
                         this.FlashInfo("Thank you for signing up!");
 
                         FormsService.SignIn(user.UserId.ToString(), false /* createPersistentCookie */);
-                        return SaveFriendlyInfoAndRedirect(user, returnUrl);   
+                        return SaveFriendlyInfoAndRedirect(user, returnUrl);
                     }
-                    else
+                    catch (Exception exp)
                     {
-                        ModelState.AddModelError("", "User info could not be found.");
+                        ModelState.AddModelError("", exp.Message);
                         this.FlashValidationSummaryErrors();
                     }
+                    
                 }
                 else
                 {
@@ -127,13 +119,11 @@ namespace Web.Controllers
         }
 
         //Logout
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             Response.Cookies["friendly"].Value = null;
             _log.LogIt(UserSession.GetCurrentUserId(), "Logged out");
+            UserSession.Logout();
             FormsService.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -151,7 +141,9 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (MembershipService.ChangePassword(UserSession.GetCurrentUserName(), model.OldPassword, model.NewPassword))
+                //we need the username for this to work so get the user.
+                User user = UserRepository.GetUser(_db, UserSession.GetCurrentUserId());
+                if (MembershipService.ChangePassword(user.Username, model.OldPassword, model.NewPassword))
                 {
                     return RedirectToAction("ChangePasswordSuccess");
                 }

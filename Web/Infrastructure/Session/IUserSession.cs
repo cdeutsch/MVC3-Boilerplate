@@ -6,5 +6,7 @@ namespace Web.Infrastructure.Session {
     {
         long GetCurrentUserId();
         string GetCurrentUserName();
+        
+        void Logout();
     }
 }

@@ -11,10 +11,14 @@ namespace Web.Models {
 
     public class User : IAuditable
     {
-        //public User() 
-        //{
-        //    //ID = Guid.NewGuid();
-        //}
+        public User()
+        {
+            //this seems to be necessary if DB is empty.
+            if (Roles == null)
+            {
+                Roles = new List<Role>();
+            }
+        }
 
         [Key] 
         public long UserId { get; set; }
@@ -54,6 +58,21 @@ namespace Web.Models {
         public DateTime Updated { get; set; }
         public DateTime Created { get; set; }
 
+        //relationships:
+        public virtual ICollection<Role> Roles { get; set; }
+
+        public string GetFriendlyName()
+        {
+            if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
+            {
+                return (FirstName + " " + LastName).Trim();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         public void JustLoggedIn()
         {
             Updated = DateTime.Now;
@@ -79,6 +98,8 @@ namespace Web.Models {
         {
             return this.UserId.ToString();
         }
+
+        
 
     }
 

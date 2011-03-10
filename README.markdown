@@ -17,8 +17,21 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Bits from Tekpub MVC 2 Starter Site - http://mvcstarter.codeplex.com/
 * Basic User Signup using simple POCO User object
 
+## History ##
+
+### 3/10/2011 ###
+
+* Updated SessionController to use a proper custom MembershipProvider instead of the hack that was in there before.
+* Updated all Nuget Packages to their latest versions.
+* Updated HTML5 Boilerplate to v1.0rc
+* Updated jQuery UI to 1.8.10
+* Updated Modernizr to 1.7
+* Fixed bugs in Flash helpers.
+* Fixed other minor bugs.
+
 ## Road Map ##
 
 * Add latest jQuery once this Validation issue is fixed: http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 * Add Telerik MVC Controls - http://www.telerik.com/products/aspnet-mvc.aspx
 * Add examples of using JSON Parser
+* Create Nuget package?

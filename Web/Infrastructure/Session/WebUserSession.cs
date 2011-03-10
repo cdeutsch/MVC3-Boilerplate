@@ -24,12 +24,20 @@ namespace Web.Infrastructure.Session
         public string GetCurrentUserName()
         {
             string userName = "";
-            if (System.Web.HttpContext.Current != null)
-                userName = System.Web.HttpContext.Current.User.Identity.Name;
+            if (HttpContext.Current != null)
+                userName = HttpContext.Current.User.Identity.Name;
             else
                 userName = Environment.UserName;
 
             return userName;
+        }
+
+        public void Logout()
+        {
+            //clear session variables.
+            HttpContext.Current.Session.RemoveAll();
+            //signout
+            System.Web.Security.FormsAuthentication.SignOut();
         }
     }
     

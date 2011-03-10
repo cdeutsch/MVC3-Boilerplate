@@ -19,7 +19,7 @@ namespace System.Web.Mvc {
         public static HtmlString Friendly(this HtmlHelper helper)
         {
             if (helper.ViewContext.HttpContext.Request.Cookies["friendly"] != null) {
-                return new HtmlString(helper.h(helper.ViewContext.HttpContext.Request.Cookies["friendly"].Value));
+                return new HtmlString(helper.ViewContext.HttpContext.Request.Cookies["friendly"].Value);
             } else {
                 return new HtmlString("");
             }
@@ -32,7 +32,7 @@ namespace System.Web.Mvc {
         }
         public static HtmlString ScriptPath(this HtmlHelper helper, string fileName)
         {
-            if (!fileName.EndsWith(".js"))
+            if (!fileName.EndsWith(".js") && !fileName.EndsWith(".swf") && !fileName.EndsWith(".xap") && !fileName.EndsWith(".xaml"))
                 fileName += ".js";
             return new HtmlString(UrlHelper.GenerateContentUrl(helper.AttributeEncode(VirtualScriptPath(fileName)), helper.ViewContext.HttpContext));
         }
@@ -48,6 +48,10 @@ namespace System.Web.Mvc {
         {
             var jsPath = string.Format(@"<link rel=""stylesheet"" type=""text/css"" href=""{0}""  media=""" + media + @""" />" + Environment.NewLine, CSSPath(helper, fileName, media));
             return new HtmlString(jsPath);
+        }
+        public static HtmlString CSSPath(this HtmlHelper helper, string fileName)
+        {
+            return CSSPath(helper, fileName, "screen");
         }
         public static HtmlString CSSPath(this HtmlHelper helper, string fileName, string media)
         {

@@ -1,12 +1,9 @@
 ﻿<!doctype html>
 @* paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ *@
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<html lang="en" class="no-js">
-<!--<![endif]-->
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <title>@ViewBag.Title</title>
@@ -18,81 +15,71 @@
     @*use SquishIt to combine and compress all CSS and Javascripts for better performance*@
     @MvcHtmlString.Create(SquishIt.Framework.Bundle.Css()
         .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
-        .Add(HtmlHelpers.VirtualCSSPath("site.css"))
+        .Add(HtmlHelpers.VirtualCSSPath("themes/base/jquery-ui.css"))
+        .Add(HtmlHelpers.VirtualCSSPath("Site.css"))
         //.ForceRelease() //comment in to enable compression.
         .WithCompressor(SquishIt.Framework.Css.Compressors.CssCompressors.YuiCompressor)
         .Render(HtmlHelpers.VirtualCSSPath("combined_#.css"))
     )
+    @RenderSection("cssFiles", false)
 
     @* All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects *@
-    @Html.Script("modernizr-1.6.min.js")
+    @Html.Script("modernizr-1.7.min.js")
 </head>
 
 <body>
-    <div id="flash" style="display:none"></div>
+    <div id="flash" class="flash" style="display:none"></div>
     <div id="container">
         <header>
-            <h1><a href="/">MySiteName</a></h1>
+            <h1><a href="/">@Web.SiteHelper.ApplicationName</a></h1>
+            
             <div id="loginMenu">
             @if (HttpContext.Current.User.Identity.IsAuthenticated) { 
             <text>Hi @Html.Friendly() | </text>
-            <form id="LogOutForm" name="LogOutForm" action="@Url.Action("logout","session")" method="post">
-                @Html.AntiForgeryToken()
-                <a href="" onclick="LogOutForm.submit();return false;" >Logout</a>
-            </form>
+                @Html.ActionLink("Logout", "Logout", "session")
             } else {
-                @Html.ActionLink("Login","login","session")
+                @Html.ActionLink("Login","Login","session")
             } 
             </div>
         </header>
-        <div id="main">
+        <div id="main" role="main">
             @RenderBody()
         </div>
         <footer>
-            Copyright &copy;@DateTime.Now.Year
+            &copy;@DateTime.Now.Year
         </footer>
     </div>
     
     @*Javascript at the bottom for fast page loading -->
       Grab Google CDN's jQuery. fall back to local if necessary*@
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-    <script>        !window.jQuery && document.write(unescape('%3Cscript src="@Html.ScriptPath("jquery-1.4.2.js")"%3E%3C/script%3E'))</script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+    <script>window.jQuery || document.write('<script src="@Html.ScriptPath("jquery-1.4.4.min.js")">\x3C/script>')</script>
+
     @*use SquishIt to combine and compress all Javascripts for better performance*@
     @MvcHtmlString.Create(SquishIt.Framework.Bundle.JavaScript()
-        .Add(HtmlHelpers.VirtualScriptPath("jquery-1.4.4.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery.unobtrusive-ajax.min.js"))
         .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.min.js"))
         .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.unobtrusive.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery-ui.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery.ajaxui.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery-ui-1.8.10.min.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery.cdeutsch.js"))
+        .Add(HtmlHelpers.VirtualScriptPath("jquery.cdeutsch.ajaxui.js"))
         .Add(HtmlHelpers.VirtualScriptPath("json2.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("site.js"))
         //.ForceRelease() //comment in to enable compression.
         .Render(HtmlHelpers.VirtualScriptPath("combined_#.js"))
     )
-    
-    <!--[if lt IE 7 ]>
-    @Html.Script("dd_belatedpng.js")
-    <script src="js/libs/dd_belatedpng.js"></script>
-    <script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
-    <![endif]-->
+    @RenderSection("scriptFiles", false)
 
     @*display jquery flash messages*@
     @Html.Flash()
 
-    @*asynchronous google analytics: mathiasbynens.be/notes/async-analytics-snippet change the UA-XXXXX-X to be your site's ID *@
+    @*mathiasbynens.be/notes/async-analytics-snippet Change UA-XXXXX-X to be your site's ID *@
     <script>
-        /*
         var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
         (function (d, t) {
-            var g = d.createElement(t),
-        s = d.getElementsByTagName(t)[0];
-            g.async = true;
-            g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g, s);
-        })(document, 'script');
-        */
-  </script>
+            var g = d.createElement(t), s = d.getElementsByTagName(t)[0]; g.async = 1;
+            g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g, s)
+        } (document, 'script'));
+    </script>
     
 </body>
 </html>

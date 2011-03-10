@@ -11,15 +11,15 @@ namespace System.Web.Mvc
 
         public static void FlashInfo(this Controller controller, string message)
         {
-            controller.TempData["info"] = message;
+            controller.TempData["info"] = EscapeJS(message);
         }
         public static void FlashWarning(this Controller controller, string message)
         {
-            controller.TempData["warning"] = message;
+            controller.TempData["warning"] = EscapeJS(message);
         }
         public static void FlashError(this Controller controller, string message)
         {
-            controller.TempData["error"] = message;
+            controller.TempData["error"] = EscapeJS(message);
         }
 
         public static void FlashValidationSummaryErrors(this Controller controller)
@@ -56,6 +56,7 @@ namespace System.Web.Mvc
             var sb = new StringBuilder();
             if (!String.IsNullOrEmpty(message) || useValidationSummary)
             {
+                string messageHtml = null;
                 sb.AppendLine("<script>");
                 sb.AppendLine("$(document).ready(function() {");
                 if (useValidationSummary)
@@ -64,13 +65,23 @@ namespace System.Web.Mvc
                 }
                 else
                 {
-                    sb.AppendFormat("$.flashBase('{0}','{1}');", className, message);
+                    sb.AppendFormat("$.flashBase('{0}',$('#flashMessage').html());", className);
+                    messageHtml = "<div id=\"flashMessage\" style=\"display:none;\">" + message + "</div>";
                 }
                 sb.AppendLine("});");
                 sb.AppendLine("</script>");
+                if (!string.IsNullOrEmpty(messageHtml))
+                {
+                    sb.AppendLine(messageHtml);
+                }
+                
             }
             return new HtmlString(sb.ToString());
         }
 
+        private static string EscapeJS(string value)
+        {
+            return value.Replace("'", "\\\'");
+        }
     }
 }

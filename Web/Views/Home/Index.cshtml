@@ -1,7 +1,5 @@
-﻿@inherits System.Web.Mvc.WebViewPage<int>
-
-@{
-    ViewBag.Title = "MySiteName";
+﻿@{
+    ViewBag.Title = Web.SiteHelper.GetFullPageTitle("Home");
 }
 
 <div class="container"> 
@@ -9,6 +7,10 @@
     @if (HttpContext.Current.User.Identity.IsAuthenticated) { 
         
         <h2>Welcome!</h2>
+        
+        <p>
+            This is the home page.
+        </p>
         
     } else {
 

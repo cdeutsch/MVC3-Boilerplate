@@ -10,7 +10,6 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Elmah - http://code.google.com/p/elmah/
 * JSON Parser - https://github.com/douglascrockford/JSON-js
 * Modernizr - http://www.modernizr.com/
-* AntiXSS Library - http://nuget.org/Packages/Packages/Details/AntiXSS-4-0-1
 * Ninject - http://ninject.org/
 * SquishIt - https://github.com/jetheredge/SquishIt
 * Sql Server CE - http://nuget.org/Packages/Packages/Details/SqlServerCompact-4-0-8482-1
@@ -20,6 +19,6 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## Road Map ##
 
-* If SquishIt becomes available as a NuGet package update reference.
+* Add latest jQuery once this Validation issue is fixed: http://bassistance.de/jquery-plugins/jquery-plugin-validation/
 * Add Telerik MVC Controls - http://www.telerik.com/products/aspnet-mvc.aspx
 * Add examples of using JSON Parser

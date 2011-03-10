@@ -1,10 +1,11 @@
 ﻿@model Web.Models.ComboSignupLoginModel
 @{
-    ViewBag.Title = "MySiteName - Login or Sign Up";
-    Html.EnableClientValidation();
+    ViewBag.Title = Web.SiteHelper.GetFullPageTitle("Login or Sign Up");
 }
 
 @Html.ValidationSummary(true, "", new { @class = "flash" })
+
+<div class="container">
 
 <div id="login">
     <h2>Login</h2>
@@ -12,23 +13,20 @@
     @using (Html.BeginForm("login","session")) { 
         @Html.AntiForgeryToken()
         @Html.Hidden("ReturnUrl", Request.QueryString["ReturnUrl"])
-        <div class="editor-label">
+
+        <div class="field">
             @Html.LabelFor(mm => mm.UserLogin.LoginName, "Login")
-        </div>
-        <div class="editor-field">
             @Html.TextBoxFor(mm => mm.UserLogin.LoginName)
             @Html.ValidationMessageFor(mm => mm.UserLogin.LoginName)
         </div>
         
-        <div class="editor-label">
+        <div class="field">
             @Html.LabelFor(mm => mm.UserLogin.Password)
-        </div>
-        <div class="editor-field">
             @Html.PasswordFor(mm => mm.UserLogin.Password) 
             @Html.ValidationMessageFor(mm => mm.UserLogin.Password)
         </div>
         
-        <div class="editor-buttons">
+        <div class="buttons">
             <input type="submit" value="Login" />
         </div>
     }
@@ -39,41 +37,47 @@
     @using (Html.BeginForm("signup", "session"))
     { 
         @Html.AntiForgeryToken()
-        <div class="editor-label">
-            @Html.LabelFor(mm => mm.UserNew.UserName)
+        
+        <div class="field">
+            @Html.LabelFor(mm => mm.UserNew.FirstName)
+            @Html.TextBoxFor(mm => mm.UserNew.FirstName)
+            @Html.ValidationMessageFor(mm => mm.UserNew.FirstName) 
         </div>
-        <div class="editor-field">
+        
+        <div class="field">
+            @Html.LabelFor(mm => mm.UserNew.LastName)
+            @Html.TextBoxFor(mm => mm.UserNew.LastName)
+            @Html.ValidationMessageFor(mm => mm.UserNew.LastName) 
+        </div>
+        
+        <div class="field">
+            @Html.LabelFor(mm => mm.UserNew.UserName)
             @Html.TextBoxFor(mm => mm.UserNew.UserName)
             @Html.ValidationMessageFor(mm => mm.UserNew.UserName) 
         </div>
         
-        <div class="editor-label">
+        <div class="field">
             @Html.LabelFor(mm => mm.UserNew.Email)
-        </div>
-        <div class="editor-field">
             @Html.TextBoxFor(mm => mm.UserNew.Email)
             @Html.ValidationMessageFor(mm => mm.UserNew.Email)
         </div>
         
-        <div class="editor-label">
+        <div class="field">
             @Html.LabelFor(mm => mm.UserNew.Password)
-        </div>
-        <div class="editor-field">
             @Html.PasswordFor(mm => mm.UserNew.Password)
             @Html.ValidationMessageFor(mm => mm.UserNew.Password)
         </div>
         
-        <div class="editor-label">
+        <div class="field">
             @Html.LabelFor(mm => mm.UserNew.ConfirmPassword, "Confirm")
-        </div>
-        <div class="editor-field">
             @Html.PasswordFor(mm => mm.UserNew.ConfirmPassword)
             @Html.ValidationMessageFor(mm => mm.UserNew.ConfirmPassword)
         </div>
         
-        <div class="editor-buttons">
+        <div class="buttons">
             <input type="submit" value="Sign Up" />
         </div>
     }
 </div>
 
+</div>

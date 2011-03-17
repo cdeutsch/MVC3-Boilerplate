@@ -106,7 +106,7 @@
     <Compile Include="Infrastructure\UserMembershipProvider\UserMembershipProvider.cs" />
     <Compile Include="Infrastructure\UserMembershipProvider\UserRoleProvider.cs" />
     <Compile Include="Models\AuditableRepository.cs" />
-    <Compile Include="Models\Forms\SessionModels.cs" />
+    <Compile Include="Models\ViewModels\SessionModels.cs" />
     <Compile Include="Models\IAuditable.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\RoleRepository.cs" />
@@ -204,7 +204,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>29777</DevelopmentServerPort>
+          <DevelopmentServerPort>16468</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

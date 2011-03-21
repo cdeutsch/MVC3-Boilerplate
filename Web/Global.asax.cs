@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Web.Models;
-using System.Data.Entity.Database;
+using System.Data.Entity;
 
 namespace Web
 {
@@ -45,7 +45,7 @@ namespace Web
         protected void Application_Start()
         {
             //initialize EF Code First DB.
-            DbDatabase.SetInitializer<SiteDB>(new SiteDBInitializer(new AccountMembershipService()));
+            Database.SetInitializer<SiteDB>(new SiteDBInitializer());
 
             AreaRegistration.RegisterAllAreas();
 

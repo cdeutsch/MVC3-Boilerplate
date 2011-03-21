@@ -13,7 +13,7 @@ namespace Web.Models
         public DbSet<User> Users { get; set; }
         public DbSet<UserActivity> UserActivitys { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ////define "many-to-many" relationships:
             modelBuilder.Entity<User>()

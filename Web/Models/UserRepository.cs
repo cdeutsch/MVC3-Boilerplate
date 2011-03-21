@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Security;
 using System.Security.Cryptography;
 
 namespace Web.Models
@@ -197,7 +196,13 @@ namespace Web.Models
         public static string CreatePasswordHash(string pwd, string salt)
         {
             string saltAndPwd = String.Concat(pwd, salt);
-            string hashedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(saltAndPwd, "sha1");
+            //string hashedPwd = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(saltAndPwd, "sha1");
+
+            //manually do what FormsAuthentication does so we don't have to rely on a reference to System.Web.
+            HashAlgorithm algorithm = SHA1.Create();
+            var bytes = algorithm.ComputeHash(System.Text.Encoding.UTF8.GetBytes(saltAndPwd));
+            string hex = BitConverter.ToString(bytes);
+            string hashedPwd = hex.Replace("-", "");
 
             return hashedPwd;
         }

@@ -55,7 +55,7 @@ namespace System.Web.Mvc {
         }
         public static HtmlString CSSPath(this HtmlHelper helper, string fileName, string media)
         {
-            if (!fileName.EndsWith(".css"))
+            if (!fileName.EndsWith(".css") && !fileName.Contains("?"))
                 fileName += ".css";
             return new HtmlString(UrlHelper.GenerateContentUrl(helper.AttributeEncode(VirtualCSSPath(fileName)), helper.ViewContext.HttpContext));
         }

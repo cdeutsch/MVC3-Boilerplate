@@ -19,6 +19,12 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 3/21/2011 ###
+* Updated to use EntityFramework.4.1 Nuget package and dealt with this bug caused by doing so. http://stackoverflow.com/questions/5365376/system-nullreferenceexception-after-upgrade-to-ef-4-1
+* Removed unnecessary using statements in Models.
+* Updated UserRepository.CreatePasswordHash to not rely on System.Web namespace.
+* Updated _Layout.cshtml to note how/why I modified HTML5 Boilerplate.
+
 ### 3/10/2011 ###
 
 * Updated SessionController to use a proper custom MembershipProvider instead of the hack that was in there before.

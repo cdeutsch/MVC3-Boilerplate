@@ -4,20 +4,21 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Web.Models;
-using Web.Infrastructure.Session;
+using Web.Infrastructure.FormsAuthenticationService;
 
 namespace Web.Controllers
 {
     [HandleError]
     public class HomeController : Controller
     {
-        SiteDB _db;
-        IUserSession _userSession;
+        public IFormsAuthenticationService FormsAuthService { get; set; }
 
-        public HomeController(IUserSession UserSession)
+        SiteDB _db;
+
+        public HomeController(IFormsAuthenticationService FormsAuthService)
         {
             _db = new SiteDB();
-            _userSession = UserSession;
+            this.FormsAuthService = FormsAuthService;
         }
 
         public ActionResult Index()

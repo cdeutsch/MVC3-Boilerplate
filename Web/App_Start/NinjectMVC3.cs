@@ -8,7 +8,7 @@ namespace Web.App_Start
     using Ninject;
     using Ninject.Web.Mvc;
     using Web.Models;
-    using Web.Infrastructure.Session;
+    using Web.Infrastructure.FormsAuthenticationService;
 
     public static class NinjectMVC3 
     {
@@ -50,7 +50,6 @@ namespace Web.App_Start
         {
             kernel.Bind<IFormsAuthenticationService>().To<FormsAuthenticationService>();
             kernel.Bind<IMembershipService>().To<AccountMembershipService>();
-            kernel.Bind<IUserSession>().To<WebUserSession>();
         }		
     }
 }

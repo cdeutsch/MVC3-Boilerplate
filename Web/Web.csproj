@@ -103,6 +103,8 @@
     <Compile Include="Helpers\FlashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\SiteHelper.cs" />
+    <Compile Include="Infrastructure\FormsAuthenticationService\FormsAuthenticationService.cs" />
+    <Compile Include="Infrastructure\FormsAuthenticationService\IFormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\Session\IUserSession.cs" />
     <Compile Include="Infrastructure\Session\WebUserSession.cs" />
     <Compile Include="Infrastructure\UserMembershipProvider\UserMembershipProvider.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\SiteDB.sdf" />
     <Content Include="Content\Images\busy.gif" />
     <Content Include="Content\boilerplate.css" />
     <Content Include="Content\themes\base\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />

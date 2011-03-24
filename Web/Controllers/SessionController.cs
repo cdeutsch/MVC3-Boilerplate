@@ -7,28 +7,26 @@ using System.Web.Security;
 using Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Routing;
-using Web.Infrastructure.Session;
+using Web.Infrastructure.FormsAuthenticationService;
 
 namespace Web.Controllers
 {
     public class SessionController : Controller
     {
 
-        public IFormsAuthenticationService FormsService { get; set; }
+        public IFormsAuthenticationService FormsAuthService { get; set; }
         public IMembershipService MembershipService { get; set; }
-        public IUserSession UserSession { get; set; }
 
         SiteDB _db;
         UserActivity _log;
 
-        public SessionController(IFormsAuthenticationService FormsService, IMembershipService MembershipService, IUserSession UserSession)
+        public SessionController(IFormsAuthenticationService FormsAuthService, IMembershipService MembershipService)
         {
             _db = new SiteDB();
             _log = new UserActivity(_db);
 
-            this.FormsService = FormsService;
+            this.FormsAuthService = FormsAuthService;
             this.MembershipService = MembershipService;
-            this.UserSession = UserSession;
         }
 
         public ActionResult Login()
@@ -56,7 +54,7 @@ namespace Web.Controllers
                         //log that the user logged in.
                         _log.LogIt(user.UserId, "User Logged In");
 
-                        FormsService.SignIn(user.UserId.ToString(), model.UserLogin.RememberMe);
+                        FormsAuthService.SignIn(user.UserId.ToString(), model.UserLogin.RememberMe);
                         return SaveFriendlyInfoAndRedirect(user, returnUrl);
                     }
                     else
@@ -97,7 +95,7 @@ namespace Web.Controllers
 
                         this.FlashInfo("Thank you for signing up!");
 
-                        FormsService.SignIn(user.UserId.ToString(), false /* createPersistentCookie */);
+                        FormsAuthService.SignIn(user.UserId.ToString(), false /* createPersistentCookie */);
                         return SaveFriendlyInfoAndRedirect(user, returnUrl);
                     }
                     catch (Exception exp)
@@ -122,9 +120,8 @@ namespace Web.Controllers
         public ActionResult Logout()
         {
             Response.Cookies["friendly"].Value = null;
-            _log.LogIt(UserSession.GetCurrentUserId(), "Logged out");
-            UserSession.Logout();
-            FormsService.SignOut();
+            _log.LogIt(FormsAuthService.GetCurrentUserId(), "Logged out");
+            FormsAuthService.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -142,7 +139,7 @@ namespace Web.Controllers
             if (ModelState.IsValid)
             {
                 //we need the username for this to work so get the user.
-                User user = UserRepository.GetUser(_db, UserSession.GetCurrentUserId());
+                User user = UserRepository.GetUser(_db, FormsAuthService.GetCurrentUserId());
                 if (MembershipService.ChangePassword(user.Username, model.OldPassword, model.NewPassword))
                 {
                     return RedirectToAction("ChangePasswordSuccess");

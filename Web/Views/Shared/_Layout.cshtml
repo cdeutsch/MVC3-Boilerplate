@@ -33,7 +33,7 @@
     @*use SquishIt to combine and compress all CSS and Javascripts for better performance*@
     @MvcHtmlString.Create(SquishIt.Framework.Bundle.Css()
         .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
-        .Add(HtmlHelpers.VirtualCSSPath("themes/base/jquery-ui.css"))
+        .Add(HtmlHelpers.VirtualCSSPath("jquery-ui.css"))
         .Add(HtmlHelpers.VirtualCSSPath("Site.css"))
         //.ForceRelease() //comment in to enable compression.
         .WithCompressor(SquishIt.Framework.Css.Compressors.CssCompressors.YuiCompressor)

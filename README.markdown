@@ -19,6 +19,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 3/25/2011 ###
+* Moved jQuery UI to root of content to fix issue with SquishIt and images path.
+
 ### 3/24/2011 ###
 * Merged IUserSession functionality into IFormsAuthenticationService since they were pretty similar.
 

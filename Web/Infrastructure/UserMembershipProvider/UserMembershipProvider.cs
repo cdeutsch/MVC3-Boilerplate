@@ -42,7 +42,7 @@ namespace Web.Infrastructure.UserMembershipProvider
 
         #endregion
 
-        
+
         #region Public (Overridden) Properties
         /// <summary>
         /// The name of the application using the custom membership provider.
@@ -364,8 +364,8 @@ namespace Web.Infrastructure.UserMembershipProvider
             using (SiteDB db = new SiteDB())
             {
                 var qUsers = from uu in db.Users
-                        where uu.LastLogin.HasValue && uu.LastLogin.Value.CompareTo(dtWindow) > 0
-                        select uu;
+                             where uu.LastLogin.HasValue && uu.LastLogin.Value.CompareTo(dtWindow) > 0
+                             select uu;
                 return qUsers.Count();
             }
         }
@@ -390,9 +390,9 @@ namespace Web.Infrastructure.UserMembershipProvider
             {
                 //build the query we'll use to find the user.
                 IQueryable<User> qUsers = from uu in db.Users
-                                        where uu.Username.ToLower() == username.ToLower()
-                                        && uu.Enabled == true
-                                        select uu;
+                                          where uu.Username.ToLower() == username.ToLower()
+                                          && uu.Enabled == true
+                                          select uu;
 
                 //the internal function takes care of the rest.
                 return _GetUser(db, qUsers, userIsOnline);
@@ -437,13 +437,13 @@ namespace Web.Infrastructure.UserMembershipProvider
             using (SiteDB db = new SiteDB())
             {
                 string username = (from uu in db.Users
-                                  where uu.Enabled == true
-                                  && uu.Email.ToLower() == email.ToLower()
-                                  select uu.Email).SingleOrDefault();
+                                   where uu.Enabled == true
+                                   && uu.Email.ToLower() == email.ToLower()
+                                   select uu.Username).SingleOrDefault();
 
                 return username;
             }
-            
+
         }
 
         /// <summary>
@@ -471,7 +471,7 @@ namespace Web.Infrastructure.UserMembershipProvider
             EnsureString(config, "description", @"User Membership Provider");
 
             base.Initialize(name, config);
-            
+
             _config = config;
 
             // Set Default parameters
@@ -581,8 +581,8 @@ namespace Web.Infrastructure.UserMembershipProvider
                 muu.Email = user.Email;
                 muu.LastLoginDate = user.LastLogin;
                 muu.MemberId = user.UserId;
-                muu.Name = user.Email;
-                return BuildMemberObject(muu);                
+                muu.Name = user.Username;
+                return BuildMemberObject(muu);
             }
             else
             {
@@ -622,14 +622,14 @@ namespace Web.Infrastructure.UserMembershipProvider
         private IQueryable<miniUser> SelectMiniUsers(IQueryable<User> qUsers)
         {
             IQueryable<miniUser> qMiniUsers = from uu in qUsers
-                                      select new miniUser
-                                        {
-                                            Name = uu.Email,
-                                            MemberId = uu.UserId,
-                                            Email = uu.Email,
-                                            CreateDate = uu.Created,
-                                            LastLoginDate = uu.LastLogin
-                                        };
+                                              select new miniUser
+                                              {
+                                                  Name = uu.Username,
+                                                  MemberId = uu.UserId,
+                                                  Email = uu.Email,
+                                                  CreateDate = uu.Created,
+                                                  LastLoginDate = uu.LastLogin
+                                              };
             return qMiniUsers;
         }
 
@@ -686,7 +686,7 @@ namespace Web.Infrastructure.UserMembershipProvider
                 }
             }
         }
-
+        
         /// <summary>
         /// Ensures the boolean is in the collection.
         /// </summary>

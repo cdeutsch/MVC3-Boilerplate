@@ -100,9 +100,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CacheHelper.cs" />
     <Compile Include="Helpers\FlashHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\SiteHelper.cs" />
+    <Compile Include="Infrastructure\CacheExtensions.cs" />
+    <Compile Include="Infrastructure\EnumerationExtensions.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService\FormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService\IFormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\Session\IUserSession.cs" />

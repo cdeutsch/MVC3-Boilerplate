@@ -6,6 +6,7 @@ namespace Web.Infrastructure.FormsAuthenticationService
 {
     public interface IFormsAuthenticationService
     {
+        bool IsAuthenticated();
         long GetCurrentUserId();
         string GetCurrentUserName();
         string GetCurrentUserSignInTicks();

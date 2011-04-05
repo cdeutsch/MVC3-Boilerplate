@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Web.Models
 {
-    public class RoleRepository
+    public static class RoleRepository
     {
         public static Role CreateRole(SiteDB db, string RoleName)
         {

@@ -8,12 +8,12 @@ using Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Routing;
 using Web.Infrastructure.FormsAuthenticationService;
+using Web.Common;
 
 namespace Web.Controllers
 {
     public class SessionController : Controller
     {
-
         public IFormsAuthenticationService FormsAuthService { get; set; }
         public IMembershipService MembershipService { get; set; }
 
@@ -55,7 +55,11 @@ namespace Web.Controllers
                         _log.LogIt(user.UserId, "User Logged In");
 
                         FormsAuthService.SignIn(user.UserId.ToString(), model.UserLogin.RememberMe);
-                        return SaveFriendlyInfoAndRedirect(user, returnUrl);
+
+                        //cache user data.
+                        CacheHelper.CacheUserData(FormsAuthService, user);
+
+                        return Redirect(user, returnUrl);
                     }
                     else
                     {
@@ -96,7 +100,11 @@ namespace Web.Controllers
                         this.FlashInfo("Thank you for signing up!");
 
                         FormsAuthService.SignIn(user.UserId.ToString(), false /* createPersistentCookie */);
-                        return SaveFriendlyInfoAndRedirect(user, returnUrl);
+
+                        //cache user data.
+                        CacheHelper.CacheUserData(FormsAuthService, user);
+
+                        return Redirect(user, returnUrl);
                     }
                     catch (Exception exp)
                     {
@@ -119,7 +127,6 @@ namespace Web.Controllers
         //Logout
         public ActionResult Logout()
         {
-            Response.Cookies["friendly"].Value = null;
             _log.LogIt(FormsAuthService.GetCurrentUserId(), "Logged out");
             FormsAuthService.SignOut();
             return RedirectToAction("Index", "Home");
@@ -160,13 +167,8 @@ namespace Web.Controllers
             return View();
         }
 
-        protected ActionResult SaveFriendlyInfoAndRedirect(User user, string returnUrl)
+        protected ActionResult Redirect(User user, string returnUrl)
         {
-            //save a friendly name for view use.
-            Response.Cookies["friendly"].Value = user.Username;
-            Response.Cookies["friendly"].Expires = DateTime.Now.AddDays(30);
-            Response.Cookies["friendly"].HttpOnly = true;
-
             //redirect to specified url or default.
             if (Url.IsLocalUrl(returnUrl))
             {

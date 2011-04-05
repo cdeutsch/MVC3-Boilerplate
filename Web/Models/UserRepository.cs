@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 namespace Web.Models
 {
-    public class UserRepository
+    public static class UserRepository
     {
         public static User CreateUser(SiteDB db, string Username, string Password, string Email)
         {

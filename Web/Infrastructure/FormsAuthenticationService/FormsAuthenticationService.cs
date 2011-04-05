@@ -11,6 +11,11 @@ namespace Web.Infrastructure.FormsAuthenticationService
     {
         protected const string UserSignInTicksCookieKey = "SessInit";
 
+        public bool IsAuthenticated()
+        {
+            return HttpContext.Current.User.Identity.IsAuthenticated;
+        }
+
         //this id is just unique to the user not globally
         private string SetCurrentUserSignInTicks()
         {

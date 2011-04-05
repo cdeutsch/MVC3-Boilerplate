@@ -16,8 +16,16 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * EF Code First - http://nuget.org/Packages/Packages/Details/EFCodeFirst-0-8
 * Bits from Tekpub MVC 2 Starter Site - http://mvcstarter.codeplex.com/
 * Basic User Signup using simple POCO User object
+* Cache Extensions - http://stackoverflow.com/questions/445050/how-can-i-cache-objects-in-asp-net-mvc
+* Phil Haack's Enumeration Extensions - http://haacked.com/archive/2010/06/10/checking-for-empty-enumerations.aspx
 
 ## History ##
+
+### 4/5/2011 ###
+* Fixed a couple bugs in UserMembershipProvider with returning the Email versus Username.
+* Made Repository Classes static.
+* Added CacheHelper so stuff like "Friendly name" would not be passed around in a cookie.
+* Added Phil Haack's Enumeration Extensions
 
 ### 3/25/2011 ###
 * Moved jQuery UI to root of content to fix issue with SquishIt and images path.

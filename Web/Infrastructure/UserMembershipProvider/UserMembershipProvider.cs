@@ -34,7 +34,7 @@ namespace Web.Infrastructure.UserMembershipProvider
         #endregion
 
         #region Fields
-        public const string EMAIL_REGEX = @"^([0-9a-zA-Z]([-\.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$";
+        public const string EMAIL_REGEX = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
         public const string DEFAULT_APPLICATION = "Web";
 
         private string _application = DEFAULT_APPLICATION;

@@ -21,6 +21,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 5/5/2011 ###
+* Updated Valid Email check's Regex so it supports + signs.
+
 ### 4/5/2011 ###
 * Fixed a couple bugs in UserMembershipProvider with returning the Email versus Username.
 * Made Repository Classes static.

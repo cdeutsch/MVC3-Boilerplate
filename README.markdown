@@ -21,6 +21,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 5/10/2011 ###
+* Fixed bug with displaying error messages on signup.
+
 ### 5/5/2011 ###
 * Updated Valid Email check's Regex so it supports + signs.
 

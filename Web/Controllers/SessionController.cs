@@ -73,6 +73,10 @@ namespace Web.Controllers
                     this.FlashValidationSummaryErrors();
                 }
             }
+            else
+            {
+                this.FlashValidationSummaryErrors();
+            }
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -119,6 +123,10 @@ namespace Web.Controllers
                     this.FlashValidationSummaryErrors();
                 }
             }
+            else
+            {
+                this.FlashValidationSummaryErrors();
+            }
 
             // If we got this far, something failed, redisplay form
             return View("login", model);
@@ -156,6 +164,10 @@ namespace Web.Controllers
                     ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
                     this.FlashValidationSummaryErrors();
                 }
+            }
+            else
+            {
+                this.FlashValidationSummaryErrors();
             }
 
             // If we got this far, something failed, redisplay form

@@ -80,11 +80,11 @@ textarea
 /* Styles for flash messages
 -----------------------------------------------------------*/
 /* hide validation summaries if the user has javascript in which case we'll "flash" the messages */
-.flash 
+#flash 
 {
     display: none;
 }
-.no-js .flash 
+.no-js #flash 
 {
     display: block;
 }

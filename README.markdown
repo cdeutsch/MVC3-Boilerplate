@@ -21,6 +21,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 5/12/2011 ###
+* Changed CSS to not cause issues with plupload.
+
 ### 5/10/2011 ###
 * Fixed bug with displaying error messages on signup.
 

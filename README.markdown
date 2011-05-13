@@ -11,7 +11,7 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * JSON Parser - https://github.com/douglascrockford/JSON-js
 * Modernizr - http://www.modernizr.com/
 * Ninject - http://ninject.org/
-* SquishIt - https://github.com/jetheredge/SquishIt
+* Telerik MVC Extensions - http://www.telerik.com/products/aspnet-mvc.aspx
 * Sql Server CE - http://nuget.org/Packages/Packages/Details/SqlServerCompact-4-0-8482-1
 * EF Code First - http://nuget.org/Packages/Packages/Details/EFCodeFirst-0-8
 * Bits from Tekpub MVC 2 Starter Site - http://mvcstarter.codeplex.com/
@@ -20,6 +20,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Phil Haack's Enumeration Extensions - http://haacked.com/archive/2010/06/10/checking-for-empty-enumerations.aspx
 
 ## History ##
+
+### 5/13/2011 ###
+* Replaced SquishIt with Telerik since Telerik seems to have better compression and it's more AppHarbor friendly.
 
 ### 5/12/2011 ###
 * Changed CSS to not cause issues with plupload.

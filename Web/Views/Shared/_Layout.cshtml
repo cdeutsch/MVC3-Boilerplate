@@ -30,14 +30,16 @@
     <!-- Uncomment if you are specifically targeting less enabled mobile browsers
     <link rel="stylesheet" media="handheld" href="@Html.CSS("handheld.css?v=2")">  -->*@
     
-    @*use SquishIt to combine and compress all CSS and Javascripts for better performance*@
-    @MvcHtmlString.Create(SquishIt.Framework.Bundle.Css()
-        .Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
+    @*use Telerik to combine and compress all CSS and Javascripts for better performance*@
+    @Html.Telerik().StyleSheetRegistrar().DefaultGroup(group =>
+        group.Add(HtmlHelpers.VirtualCSSPath("boilerplate.css"))
+        .Add("telerik.common.min.css")
+        .Add("telerik.web20.min.css")
         .Add(HtmlHelpers.VirtualCSSPath("jquery-ui.css"))
         .Add(HtmlHelpers.VirtualCSSPath("Site.css"))
-        //.ForceRelease() //comment in to enable compression.
-        .WithCompressor(SquishIt.Framework.Css.Compressors.CssCompressors.YuiCompressor)
-        .Render(HtmlHelpers.VirtualCSSPath("combined_#.css"))
+        .Add(HtmlHelpers.VirtualCSSPath("version.0001.css"))
+        .Combined(true)
+        .Compress(true)
     )
     @RenderSection("cssFiles", false)
 
@@ -79,17 +81,18 @@
     <script src="@Html.Script("script.js")"></script>
     <!-- end scripts-->*@
     
-    @*use SquishIt to combine and compress all Javascripts for better performance*@
-    @MvcHtmlString.Create(SquishIt.Framework.Bundle.JavaScript()
-        .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.unobtrusive.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery-ui-1.8.10.min.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery.cdeutsch.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("jquery.cdeutsch.ajaxui.js"))
-        .Add(HtmlHelpers.VirtualScriptPath("json2.min.js"))
-        //.ForceRelease() //comment in to enable compression.
-        .Render(HtmlHelpers.VirtualScriptPath("combined_#.js"))
-    )
+    @*use telerik to combine and compress all Javascripts for better performance*@
+    @Html.Telerik().ScriptRegistrar().jQuery(false).DefaultGroup(group =>
+        group.Add(HtmlHelpers.VirtualScriptPath("jquery.validate.min.js"))
+            .Add(HtmlHelpers.VirtualScriptPath("jquery.validate.unobtrusive.min.js"))
+            .Add(HtmlHelpers.VirtualScriptPath("jquery-ui-1.8.10.min.js"))
+            .Add(HtmlHelpers.VirtualScriptPath("jquery.cdeutsch.js"))
+            .Add(HtmlHelpers.VirtualScriptPath("jquery.cdeutsch.ajaxui.js"))
+            .Add(HtmlHelpers.VirtualScriptPath("json2.min.js"))
+            .Add(HtmlHelpers.VirtualScriptPath("version.0001.js"))
+            .Combined(true)
+            .Compress(true)
+        )
     @RenderSection("scriptFiles", false)
 
     @*display jquery flash messages*@

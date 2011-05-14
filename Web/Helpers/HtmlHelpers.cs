@@ -65,6 +65,10 @@ namespace System.Web.Mvc
         {
             return (cssDir + fileName);
         }
+        public static HtmlString ImagePath(this HtmlHelper helper, string fileName)
+        {
+            return new HtmlString(UrlHelper.GenerateContentUrl(VirtualImagePath(fileName), helper.ViewContext.HttpContext));
+        }
         public static HtmlString Image(this HtmlHelper helper, string fileName)
         {
             return Image(helper, fileName, "");

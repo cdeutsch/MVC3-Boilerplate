@@ -23,6 +23,7 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ### 5/13/2011 ###
 * Replaced SquishIt with Telerik since Telerik seems to have better compression and it's more AppHarbor friendly.
+* Added ImagePath Helper.
 
 ### 5/12/2011 ###
 * Changed CSS to not cause issues with plupload.

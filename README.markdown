@@ -21,6 +21,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 6/19/2011 ###
+* Added null check to CacheHelper.
+
 ### 5/13/2011 ###
 * Replaced SquishIt with Telerik since Telerik seems to have better compression and it's more AppHarbor friendly.
 * Added ImagePath Helper.

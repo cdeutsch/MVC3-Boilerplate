@@ -15,7 +15,6 @@ namespace Web.Common
 
     public static class CacheHelper
     {
-        public const string SessionIdKey = "SessionId";
         public const string UserFriendlyNameKey = "FriendlyName";
 
         /// <summary>
@@ -45,7 +44,15 @@ namespace Web.Common
                     {
                         using (SiteDB db = new SiteDB())
                         {
-                            return UserRepository.GetUser(db, FormsAuthService.GetCurrentUserId()).Username;
+                            var user = UserRepository.GetUser(db, FormsAuthService.GetCurrentUserId());
+                            if (user != null)
+                            {
+                                return user.Username;
+                            }
+                            else
+                            {
+                                return "";
+                            }
                         }
                     }
                     else

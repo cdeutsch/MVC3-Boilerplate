@@ -21,6 +21,9 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 7/05/2011 ###
+* Enabled Elmah error filtering by default.
+
 ### 6/19/2011 ###
 * Added null check to CacheHelper.
 

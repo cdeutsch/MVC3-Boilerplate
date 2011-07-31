@@ -23,6 +23,7 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ### 7/31/2011 ###
 * Updated Flash Message helpers to work without javascript.
+* Added Z-index to flash message.
 
 ### 7/05/2011 ###
 * Enabled Elmah error filtering by default.

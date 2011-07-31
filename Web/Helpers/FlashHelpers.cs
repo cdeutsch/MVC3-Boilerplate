@@ -12,14 +12,17 @@ namespace System.Web.Mvc
         public static void FlashInfo(this Controller controller, string message)
         {
             controller.TempData["info"] = EscapeJS(message);
+            controller.ViewBag.FlashMessage = message; //no-js fallback (output in your #flashmessage element)
         }
         public static void FlashWarning(this Controller controller, string message)
         {
             controller.TempData["warning"] = EscapeJS(message);
+            controller.ViewBag.FlashMessage = message; //no-js fallback (output in your #flashmessage element)
         }
         public static void FlashError(this Controller controller, string message)
         {
             controller.TempData["error"] = EscapeJS(message);
+            controller.ViewBag.FlashMessage = message; //no-js fallback (output in your #flashmessage element)
         }
 
         public static void FlashValidationSummaryErrors(this Controller controller)
@@ -65,8 +68,8 @@ namespace System.Web.Mvc
                 }
                 else
                 {
-                    sb.AppendFormat("$.flashBase('{0}',$('#flashMessage').html());", className);
-                    messageHtml = "<div id=\"flashMessage\" style=\"display:none;\">" + message + "</div>";
+                    sb.AppendFormat("$.flashBase('{0}',$('#flashMessageText').html());", className);
+                    messageHtml = "<div id=\"flashMessageText\" style=\"display:none;\">" + message + "</div>";
                 }
                 sb.AppendLine("});");
                 sb.AppendLine("</script>");

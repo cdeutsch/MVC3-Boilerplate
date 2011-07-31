@@ -17,7 +17,7 @@
 
     $.flashClear = function (selector) {
         if (!selector) {
-            selector = '#flash';
+            selector = '#flashMessage';
         }
         $(selector).hide().html('').attr('class', '');
     };
@@ -33,10 +33,12 @@
     $.flashBase = function (cssClass, message, selector) {
         if (message) {
             if (!selector) {
-                selector = '#flash';
+                selector = '#flashMessage';
             }
             var jFlash = $(selector);
-            jFlash.html(message);
+            if (message) {
+                jFlash.html(message);
+            }
             jFlash.attr('class', '');
             jFlash.addClass(cssClass);
             jFlash.slideDown('slow');
@@ -55,7 +57,7 @@
 
     $(document).ready(function () {
         //hide flash message when clicked.
-        $('#flash').live(
+        $('#flashMessage').live(
             "click",
             function (event) {
                 $(this).toggle('highlight');

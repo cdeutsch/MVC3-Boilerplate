@@ -80,16 +80,22 @@ textarea
 /* Styles for flash messages
 -----------------------------------------------------------*/
 /* hide validation summaries if the user has javascript in which case we'll "flash" the messages */
-#flash 
+#flashMessage 
 {
     display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-.no-js #flash 
+.no-js #flashMessage 
 {
     display: block;
+    position: inherit;
+    color: Red;
+    margin: 1em;
 }
 
-#flash li
+#flashMessage li
 {
     list-style: none;
 }

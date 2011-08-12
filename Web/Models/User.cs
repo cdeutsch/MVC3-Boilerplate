@@ -34,8 +34,6 @@ namespace Web.Models {
 
         [StringLength(100)] 
         public string PasswordHash { get; set; }
-        [StringLength(25)] 
-        public string PasswordSalt { get; set; }
         [StringLength(100)] 
         public string FirstName { get; set; }
         [StringLength(100)] 

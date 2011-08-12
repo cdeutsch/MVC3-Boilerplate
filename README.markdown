@@ -15,13 +15,15 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Sql Server CE - http://nuget.org/Packages/Packages/Details/SqlServerCompact-4-0-8482-1
 * EF Code First - http://nuget.org/Packages/Packages/Details/EFCodeFirst-0-8
 * Bits from Tekpub MVC 2 Starter Site - http://mvcstarter.codeplex.com/
-* Basic User Signup using simple POCO User object
+* Basic User Signup using simple POCO User object complete with change and forgot your password.
 * Cache Extensions - http://stackoverflow.com/questions/445050/how-can-i-cache-objects-in-asp-net-mvc
 * Phil Haack's Enumeration Extensions - http://haacked.com/archive/2010/06/10/checking-for-empty-enumerations.aspx
+* BCrypt password hashing
 
 ## History ##
 
 ### 8/12/2011 ###
+* Changed Hash routine to use BCrypt.
 * Moved Upload Paths to SiteHelper and removed unnecessary namespace declarations to make it easier to more SiteSettings to its own assembly.
 * Fixed minor bug with flash helper displaying both validation summary and flash message.
 
@@ -93,5 +95,5 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Fixed other minor bugs.
 
 ## Road Map ##
-* Add alternative login options like OpenId, Janrain, or Twitter
+* Add alternative login options like OpenId, Janrain, or Twitter?
 * Create Nuget package?

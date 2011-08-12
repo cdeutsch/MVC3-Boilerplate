@@ -8,6 +8,7 @@ using System.IO;
 using System.Net.Mail;
 using Web.Models.Config;
 using RazorEngine;
+using DevOne.Security.Cryptography.BCrypt;
 
 namespace Web.Models
 {
@@ -21,8 +22,7 @@ namespace Web.Models
             user.Email = Email;
             user.Enabled = true;
             //create salt for password hash.
-            user.PasswordSalt = CreateSalt();
-            user.PasswordHash = CreatePasswordHash(Password, user.PasswordSalt);
+            user.PasswordHash = CreatePasswordHash(Password);
             user.Created = DateTime.Now;
             user.Updated = user.Created;
 
@@ -148,7 +148,7 @@ namespace Web.Models
             if (user != null)
             {
                 //validate password by creating hash using salt.
-                if (CreatePasswordHash(Password, user.PasswordSalt) == user.PasswordHash)
+                if (BCryptHelper.CheckPassword(Password, user.PasswordHash))
                 {
                     valid = true;
                     user.LastLogin = DateTime.Now;
@@ -165,11 +165,10 @@ namespace Web.Models
             if (user != null)
             {
                 //validate password by creating hash using salt.
-                if (CreatePasswordHash(OldPassword, user.PasswordSalt) == user.PasswordHash)
+                if (BCryptHelper.CheckPassword(OldPassword, user.PasswordHash))
                 {
                     //ok to change password.
-                    user.PasswordSalt = CreateSalt();
-                    user.PasswordHash = CreatePasswordHash(NewPassword, user.PasswordSalt);
+                    user.PasswordHash = CreatePasswordHash(NewPassword);
                     db.SaveChanges();
                     bSuccess = true;
                 }
@@ -180,8 +179,7 @@ namespace Web.Models
         public static bool ResetPassword(SiteDB db, User User, string NewPassword)
         {
             //ok to change password.
-            User.PasswordSalt = CreateSalt();
-            User.PasswordHash = CreatePasswordHash(NewPassword, User.PasswordSalt);
+            User.PasswordHash = CreatePasswordHash(NewPassword);
             db.SaveChanges();
 
             return true;
@@ -262,39 +260,13 @@ namespace Web.Models
         }
         
 
-        /// <summary>
-        /// Creates Salt with default size of 16.
-        /// </summary>
-        /// <returns></returns>
-        public static string CreateSalt()
+        public static string CreatePasswordHash(string pwd)
         {
-            //default size to 16.
-            return CreateSalt(16);
-        }
+            string salt = BCryptHelper.GenerateSalt(8);
 
-        public static string CreateSalt(int size)
-        {
-            //Generate a cryptographic random number.
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            byte[] buff = new byte[size];
-            rng.GetBytes(buff);
+            var hashedPassword = BCryptHelper.HashPassword(pwd, salt);
 
-            // Return a Base64 string representation of the random number.
-            return Convert.ToBase64String(buff);
-        }
-
-        public static string CreatePasswordHash(string pwd, string salt)
-        {
-            string saltAndPwd = String.Concat(pwd, salt);
-            //string hashedPwd = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(saltAndPwd, "sha1");
-
-            //manually do what FormsAuthentication does so we don't have to rely on a reference to System.Web.
-            HashAlgorithm algorithm = SHA1.Create();
-            var bytes = algorithm.ComputeHash(System.Text.Encoding.UTF8.GetBytes(saltAndPwd));
-            string hex = BitConverter.ToString(bytes);
-            string hashedPwd = hex.Replace("-", "");
-
-            return hashedPwd;
+            return hashedPassword;
         }
     }
 }

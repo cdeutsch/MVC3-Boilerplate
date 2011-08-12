@@ -494,8 +494,7 @@ namespace Web.Infrastructure.UserMembershipProvider
                 {
                     //create a new password, hash it and save it.
                     string sPassword = Membership.GeneratePassword(8, 1);
-                    user.PasswordSalt = UserRepository.CreateSalt();
-                    user.PasswordHash = UserRepository.CreatePasswordHash(sPassword, user.PasswordSalt);
+                    user.PasswordHash = UserRepository.CreatePasswordHash(sPassword);
                     db.SaveChanges();
 
                     return sPassword;

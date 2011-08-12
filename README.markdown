@@ -23,6 +23,7 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ### 8/12/2011 ###
 * Moved Upload Paths to SiteHelper and removed unnecessary namespace declarations to make it easier to more SiteSettings to its own assembly.
+* Fixed minor bug with flash helper displaying both validation summary and flash message.
 
 ### 8/11/2011 ###
 * Added "Forgot Password" feature that sends an email with a uniqure verification url that the user can visit to change their password.

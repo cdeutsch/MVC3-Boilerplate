@@ -172,7 +172,13 @@ textarea
     cursor:pointer;
 }
 
-
+.validation-summary-errors.flash {
+    display: none;
+}
+.no-js .validation-summary-errors.flash
+{
+    display: block;
+}
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/

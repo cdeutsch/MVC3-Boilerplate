@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Configuration;
 using System.Net.Mail;
-using System.Web.Hosting;
 
 namespace Web.Models.Config
 {
@@ -30,22 +29,6 @@ namespace Web.Models.Config
             }
         }
 
-        public static string UploadsVirtualPath
-        {
-            get
-            {
-                return "~/App_Data/uploads/";
-            }
-        }
-
-        public static string UploadsServerPath
-        {
-            get
-            {
-                return HostingEnvironment.MapPath(UploadsVirtualPath);
-            }
-        }
-        
         public static SmtpClient GetSmtpClient()
         {
             SmtpClient client = new SmtpClient();

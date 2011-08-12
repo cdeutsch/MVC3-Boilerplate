@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.IO;
 using System.Configuration;
+using System.Web.Hosting;
 
 namespace Web
 {
@@ -36,6 +37,22 @@ namespace Web
         public static string GetFullPageTitle(string PageTitle)
         {
             return ApplicationName + " - " + PageTitle;
+        }
+
+        public static string UploadsVirtualPath
+        {
+            get
+            {
+                return "~/App_Data/uploads/";
+            }
+        }
+
+        public static string UploadsServerPath
+        {
+            get
+            {
+                return HostingEnvironment.MapPath(UploadsVirtualPath);
+            }
         }
 
         /// <summary>

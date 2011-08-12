@@ -90,6 +90,24 @@ namespace Web.Models
         [Display(Name = "Organization")]
         public string OrganizationName { get; set; }
     }
+
+    public class ResetPasswordModel
+    {
+        [Required]
+        [Display(Name = "Reset Code")]
+        public string ResetCode { get; set; }
+
+        [Required]
+        [ValidatePasswordLength]
+        [DataType(DataType.Password)]
+        [Display(Name = "New password")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+    }
     #endregion
 
     #region Services

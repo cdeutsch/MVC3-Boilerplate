@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Security.Cryptography;
+using Web.Infrastructure;
+using System.IO;
+using System.Net.Mail;
+using Web.Models.Config;
+using RazorEngine;
 
 namespace Web.Models
 {
@@ -171,6 +176,91 @@ namespace Web.Models
             }        
             return bSuccess;
         }
+
+        public static bool ResetPassword(SiteDB db, User User, string NewPassword)
+        {
+            //ok to change password.
+            User.PasswordSalt = CreateSalt();
+            User.PasswordHash = CreatePasswordHash(NewPassword, User.PasswordSalt);
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public static void SendForgotPassword(SiteDB db, string Email, string ForgotPasswordUrlTemplate, string EmailTemplatesPath)
+        {
+            //get user by email and re-send verification email.
+            User user = db.Users.SingleOrDefault(oo => oo.Email.ToLower() == Email.ToLower() && oo.Enabled);
+            if (user == null)
+            {
+                throw new ApplicationException("User not found.");
+            }
+            //send email.
+            SendForgotPassword(db, user, ForgotPasswordUrlTemplate, EmailTemplatesPath);
+        }
+
+        public static void SendForgotPassword(SiteDB db, User User, string ForgotPasswordUrlTemplate, string EmailTemplatesPath)
+        {
+            //delete existing PasswordResets
+            foreach (PasswordReset pr in User.PasswordResets.ToList())
+            {
+                db.PasswordResets.Remove(pr);
+            }
+            //add new PasswordReset.
+            PasswordReset passwordReset = new PasswordReset();
+            passwordReset.ResetCode = RandomDataGenerator.GetRandomString(12);
+            AuditableRepository.DefaultAuditableToNow(passwordReset);
+            User.PasswordResets.Add(passwordReset);
+
+            db.SaveChanges();
+
+            string template = File.OpenText(EmailTemplatesPath + "ForgotPassword.html.cshtml").ReadToEnd();
+            var model = new
+            {
+                Email = User.Email,
+                FirstName = User.FirstName,
+                LastName = User.LastName,
+                ForgotPasswordUrl = string.Format(ForgotPasswordUrlTemplate, passwordReset.ResetCode),
+                ApplicationName = SiteSettings.ApplicationName
+            };
+            string body = Razor.Parse(template, model);
+
+            //email the invitation.
+            MailMessage message = new MailMessage();
+            message.To.Add(User.Email);
+            message.Subject = "Reset " + SiteSettings.ApplicationName + " Password";
+            message.Body = body;
+            message.IsBodyHtml = true;
+
+            SmtpClient client = new SmtpClient();
+            client.Send(message);
+        }
+
+        public static User VerifyResetCode(SiteDB db, string ResetCode)
+        {
+            //get user associated with this code.
+            PasswordReset passwordReset = db.PasswordResets.Include("User").SingleOrDefault(oo => oo.ResetCode == ResetCode);
+            if (passwordReset == null)
+            {
+                throw new ApplicationException("Invalid reset code.");
+            }
+
+            return passwordReset.User;
+        }
+
+        public static PasswordReset DeleteResetCode(SiteDB db, string ResetCode)
+        {
+            //delete the reset code.
+            PasswordReset passwordReset = db.PasswordResets.SingleOrDefault(oo => oo.ResetCode == ResetCode);
+            if (passwordReset != null)
+            {
+                db.PasswordResets.Remove(passwordReset);
+                db.SaveChanges();
+            }
+
+            return passwordReset;
+        }
+        
 
         /// <summary>
         /// Creates Salt with default size of 16.

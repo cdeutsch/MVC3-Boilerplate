@@ -9,6 +9,7 @@ namespace Web.Models
 {
     public class SiteDB : DbContext
     {
+        public DbSet<PasswordReset> PasswordResets { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserActivity> UserActivitys { get; set; }

@@ -34,16 +34,26 @@ h6 {font-size:1em;font-weight:bold;}
     margin-bottom: 1em;
 }
 
+footer 
+{
+    clear: both;
+}
+
+/* Login page
+-----------------------------------------------------------*/
+
 #signup, #login
 {
     float: left;
     width: 450px;
 }
-
-footer 
+#login #forgotPassword 
 {
-    clear: both;
+    display: block;
+    margin-top: 1em;
+    font-size: .8em;
 }
+
 
 /* simplified form styles
 -----------------------------------------------------------*/
@@ -97,6 +107,9 @@ textarea
     margin: 1em;
 }
 
+#flashMessage ul {
+    margin: 0;
+}
 #flashMessage li
 {
     list-style: none;

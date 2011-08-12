@@ -28,6 +28,7 @@
         
         <div class="buttons">
             <input type="submit" value="Login" />
+            @Html.ActionLink("Forgot Password?", "ForgotPassword", new { Email = (Model != null && Model.UserLogin != null) ? Model.UserLogin.LoginName : "" }, new { id = "forgotPassword" })
         </div>
     }
 </div>

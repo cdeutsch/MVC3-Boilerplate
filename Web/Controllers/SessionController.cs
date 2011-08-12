@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Routing;
 using Web.Infrastructure.FormsAuthenticationService;
 using Web.Common;
+using Web.Models.Config;
 
 namespace Web.Controllers
 {
@@ -175,6 +176,75 @@ namespace Web.Controllers
         }
 
         public ActionResult ChangePasswordSuccess()
+        {
+            return View();
+        }
+
+        public ActionResult ForgotPassword(string Email)
+        {
+            return View((object)Email);
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(string Email, FormCollection Collection)
+        {
+            //send email
+            UserRepository.SendForgotPassword(_db, Email, Url.Action("ResetPassword", "Session", null, "http") + "/{0}", Server.MapPath(SiteSettings.EmailTemplatesVirtualPath));
+
+            this.FlashInfo("Email Sent");
+
+            return RedirectToAction("ForgotPasswordSent");
+        }
+
+        public ActionResult ForgotPasswordSent()
+        {
+            return View();
+        }
+
+
+        public ActionResult ResetPassword(string Id)
+        {
+            //verify the ResetCode.
+            User user = UserRepository.VerifyResetCode(_db, Id);
+
+            var model = new ResetPasswordModel()
+            {
+                ResetCode = Id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                //verify the ResetCode.
+                User user = UserRepository.VerifyResetCode(_db, model.ResetCode);
+
+                //change the user's password.
+                if (UserRepository.ResetPassword(_db, user, model.NewPassword))
+                {
+                    //delete the reset code so it can't be used again.
+                    UserRepository.DeleteResetCode(_db, model.ResetCode);
+
+                    this.FlashInfo("Password Successfully Reset");
+
+                    return RedirectToAction("ResetPasswordSuccess");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Failed to reset password. Make sure the new password is valid.");
+                    this.FlashValidationSummaryErrors();
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        public ActionResult ResetPasswordSuccess()
         {
             return View();
         }

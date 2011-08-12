@@ -15,6 +15,10 @@ namespace Web.Models {
             {
                 Roles = new List<Role>();
             }
+            if (PasswordResets == null)
+            {
+                PasswordResets = new List<PasswordReset>();
+            }
         }
 
         [Key] 
@@ -56,6 +60,7 @@ namespace Web.Models {
         public DateTime Created { get; set; }
 
         //relationships:
+        public virtual ICollection<PasswordReset> PasswordResets { get; set; }
         public virtual ICollection<Role> Roles { get; set; }
 
         public string GetFriendlyName()

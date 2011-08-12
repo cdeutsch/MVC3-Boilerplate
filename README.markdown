@@ -22,6 +22,7 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 ## History ##
 
 ### 8/11/2011 ###
+* Added "Forgot Password" feature that sends an email with a uniqure verification url that the user can visit to change their password.
 * Updated all Nuget packages
 * Changed to custom jQuery UI theme and updated to version 1.8.15
 * Updated jQuery to 1.6.2

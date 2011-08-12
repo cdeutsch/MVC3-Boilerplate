@@ -27,12 +27,25 @@ namespace Web.Infrastructure.FormsAuthenticationService
             return sessionVersion;
         }
 
+        /// <summary>
+        /// UserId is stored in ther User Data of the ticket. This allows our custom MembershipProvider to use the "username" value correctly.
+        /// </summary>
+        /// <returns></returns>
         public long GetCurrentUserId()
         {
-            long userId;
-            if (long.TryParse(GetCurrentUserName(), out userId))
+            string sUserData = "";
+            if ((HttpContext.Current.User != null) && (HttpContext.Current.User.Identity.IsAuthenticated) && (HttpContext.Current.User.Identity is FormsIdentity) && (!string.IsNullOrEmpty(((FormsIdentity)HttpContext.Current.User.Identity).Ticket.UserData)))
             {
-                return userId;
+                sUserData = ((FormsIdentity)HttpContext.Current.User.Identity).Ticket.UserData;
+                long userId;
+                if (long.TryParse(sUserData, out userId))
+                {
+                    return userId;
+                }
+                else
+                {
+                    return -1;
+                }
             }
             else
             {
@@ -69,11 +82,24 @@ namespace Web.Infrastructure.FormsAuthenticationService
             }
         }
 
-        public void SignIn(string userName, bool createPersistentCookie)
+        public void SignIn(long UserId, string UserName, bool CreatePersistentCookie)
         {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (String.IsNullOrEmpty(UserName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
 
-            FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
+            //FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
+                UserName,
+                DateTime.Now,
+                DateTime.Now.AddMinutes(30),
+                CreatePersistentCookie,
+                UserId.ToString(),
+                FormsAuthentication.FormsCookiePath);
+
+            // Encrypt the ticket.
+            string encTicket = FormsAuthentication.Encrypt(ticket);
+
+            // Create the cookie.
+            HttpContext.Current.Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
 
             //store a cookie for the user that indicates their login time.
             SetCurrentUserSignInTicks();

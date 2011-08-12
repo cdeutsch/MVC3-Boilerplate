@@ -11,7 +11,7 @@ namespace Web.Infrastructure.FormsAuthenticationService
         string GetCurrentUserName();
         string GetCurrentUserSignInTicks();
 
-        void SignIn(string userName, bool createPersistentCookie);
+        void SignIn(long UserId, string UserName, bool CreatePersistentCookie);
         void SignOut();
     }
 }

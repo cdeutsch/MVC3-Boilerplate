@@ -32,6 +32,7 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Updated HTML5 Boilerplate to 2.0
 * Changed the HTML Helper DeleteLink to FormPostLink because it can be used to do more then just delete.
 * Added FormPostButton HTML Helper.
+* Fixed issue with custom MembershipProvider and how we were saving the UserId. We now save the username as the FormsAuth Username and store UserId in UserData.
 
 ### 8/9/2011 ###
 * Added $.cancelAjaxIfRunning function.
@@ -88,8 +89,5 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Fixed other minor bugs.
 
 ## Road Map ##
-
-* Add latest jQuery once this Validation issue is fixed: http://bassistance.de/jquery-plugins/jquery-plugin-validation/
-* Add Telerik MVC Controls - http://www.telerik.com/products/aspnet-mvc.aspx
-* Add examples of using JSON Parser
+* Add alternative login options like OpenId, Janrain, or Twitter
 * Create Nuget package?

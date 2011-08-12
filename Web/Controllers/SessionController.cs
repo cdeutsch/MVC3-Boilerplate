@@ -55,7 +55,7 @@ namespace Web.Controllers
                         //log that the user logged in.
                         _log.LogIt(user.UserId, "User Logged In");
 
-                        FormsAuthService.SignIn(user.UserId.ToString(), model.UserLogin.RememberMe);
+                        FormsAuthService.SignIn(user.UserId, user.Username, model.UserLogin.RememberMe);
 
                         //cache user data.
                         CacheHelper.CacheUserData(FormsAuthService, user);
@@ -104,7 +104,7 @@ namespace Web.Controllers
 
                         this.FlashInfo("Thank you for signing up!");
 
-                        FormsAuthService.SignIn(user.UserId.ToString(), false /* createPersistentCookie */);
+                        FormsAuthService.SignIn(user.UserId, user.Username, false /* createPersistentCookie */);
 
                         //cache user data.
                         CacheHelper.CacheUserData(FormsAuthService, user);

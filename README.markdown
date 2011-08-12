@@ -29,6 +29,8 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 * Updated modernizr to 2.0.6
 * Fixed bug in jquery.validate.unobtrusive.js so it works with new version of jQuery
 * Updated HTML5 Boilerplate to 2.0
+* Changed the HTML Helper DeleteLink to FormPostLink because it can be used to do more then just delete.
+* Added FormPostButton HTML Helper.
 
 ### 8/9/2011 ###
 * Added $.cancelAjaxIfRunning function.

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Text;
 using System.Web.Mvc.Html;
-using Web.Common;
 using Web.Infrastructure.FormsAuthenticationService;
+using Web.Common;
 
 namespace System.Web.Mvc
 {
@@ -92,15 +92,26 @@ namespace System.Web.Mvc
         /// <param name="routeName"></param>
         /// <param name="routeValues"></param>
         /// <returns></returns>
-        public static HtmlString DeleteLink(this HtmlHelper helper, string linkText, string actionName, string controllerName, object routeValues)
+        public static HtmlString FormPostLink(this HtmlHelper helper, string linkText, string actionName, string controllerName, object routeValues)
         {
             var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
             string url = urlHelper.Action(actionName, controllerName, routeValues);
 
-            string format = @"<form method=""post"" action=""{0}"" class=""deleteLink""><input type=""submit"" value=""{1}"" />{2}</form>";
+            string format = @"<form method=""post"" action=""{0}"" class=""formPostLink""><input type=""submit"" value=""{1}"" />{2}</form>";
 
             string form = string.Format(format, helper.AttributeEncode(url), helper.AttributeEncode(linkText), helper.AntiForgeryToken());
-            return new HtmlString(form + helper.ActionLink(linkText, actionName, controllerName, routeValues, new { @class = "deleteLink" }).ToString());
+            return new HtmlString(form + helper.ActionLink(linkText, actionName, controllerName, routeValues, new { @class = "formPostLink" }).ToString());
+        }
+
+        public static HtmlString FormPostButton(this HtmlHelper helper, string linkText, string actionName, string controllerName, object routeValues)
+        {
+            var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
+            string url = urlHelper.Action(actionName, controllerName, routeValues);
+
+            string format = @"<form method=""post"" action=""{0}""><input type=""submit"" value=""{1}"" />{2}</form>";
+
+            string form = string.Format(format, helper.AttributeEncode(url), helper.AttributeEncode(linkText), helper.AntiForgeryToken());
+            return new HtmlString(form);
         }
 
         public static HtmlString SelectedAttributeIfTrue(this HtmlHelper helper, bool Condition)
@@ -125,6 +136,5 @@ namespace System.Web.Mvc
                 return new HtmlString("");
             }
         }
-
     }
 }

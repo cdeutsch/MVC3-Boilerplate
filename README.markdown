@@ -21,6 +21,15 @@ I'd love to see someone smarter then me take this over and make it awesome. I'm 
 
 ## History ##
 
+### 8/11/2011 ###
+* Updated all Nuget packages
+* Changed to custom jQuery UI theme and updated to version 1.8.15
+* Updated jQuery to 1.6.2
+* Updated jQuery.Validate to 1.8.1
+* Updated modernizr to 2.0.6
+* Fixed bug in jquery.validate.unobtrusive.js so it works with new version of jQuery
+* Updated HTML5 Boilerplate to 2.0
+
 ### 8/9/2011 ###
 * Added $.cancelAjaxIfRunning function.
 

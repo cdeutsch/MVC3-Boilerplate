@@ -285,7 +285,7 @@
         var prefix = getModelPrefix(options.element.name),
             other = options.params.other,
             fullOtherName = appendModelPrefix(other, prefix),
-            element = $(options.form).find(":input[name=" + fullOtherName + "]")[0];
+            element = $(options.form).find(":input[name=" + fullOtherName.replace(".", "\\.") + "]")[0];
 
         setValidationValues(options, "equalTo", element);
     });

@@ -55,13 +55,6 @@
         }
     };
 
-	//check if there is a request in progress, if so abort it before starting a new one.
-    $.cancelAjaxIfRunning = function (request) {
-        if (request && request.readyState != 4) {
-            request.abort();
-        }
-    };
-	
     $(document).ready(function () {
         //hide flash message when clicked.
         $('#flashMessage').live(
@@ -71,11 +64,11 @@
             }
         );
 
-        //add busy indicator
-        $('<div id="busy" style="display:none;" />')
-            .ajaxStart(function () { $(this).show(); })
-            .ajaxStop(function () { $(this).hide(); })
-            .appendTo('body');
+//        //add busy indicator
+//        $('<div id="busy" style="display:none;" />')
+//            .ajaxStart(function () { $(this).show(); })
+//            .ajaxStop(function () { $(this).hide(); })
+//            .appendTo('body');
 
         //log errors.
         $('body').ajaxError(function handleError(event, xhr, options, err) {
